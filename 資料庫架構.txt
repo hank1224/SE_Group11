@@ -1,0 +1,65 @@
+1. 顧客資料表（Customers）
+- 顧客編號 (PK)
+- 顧客名稱
+- 顧客性別
+- Email
+- 電話
+- 業務員編號 (FK to Salespeople table)
+- 個人推薦代碼 (FK to ReferralCodes table)
+- 使用推薦代碼 (FK to ReferralCodes table)
+
+2. 按摩椅使用記錄表（MassageChairUsages）
+- 使用紀錄編號 (PK)
+- 顧客編號 (FK to Customers table)
+- 按摩椅編號 (FK to MassageChairs table)
+- 使用時間
+
+3. 實體店面表（PhysicalStores）
+- 店號 (PK)
+- 分店名稱
+
+4. 店面詳細資料表（PhysicalStoreDetails）
+- 店號 (FK to PhysicalStores table)
+- 店營業額
+- 公共按摩椅編號 (FK to MassageChairs table)
+
+5. 顧客訂單表格（CustomerOrders）
+- 訂單編號 (PK)
+- 顧客編號 (FK to Customers table)
+- 產品編號 (FK to Products table)
+- 業務員編號 (FK to Salespeople table)
+- 訂單日期
+- 顧客滿意分數
+
+6. 業務員表格（Salespeople）
+- 業務員編號 (PK)
+- 業務員姓名
+
+7. 推薦代碼表格（ReferralCodes）
+- 推薦代碼 (PK)
+
+8. 產品表格（Products）
+- 產品編號 (PK)
+- 產品型號
+- 產品名稱
+- 產品價格
+
+9. 線上店面訪問記錄表（OnlineStoreVisits）
+- 訪問編號 (PK)
+- 顧客編號 (FK to Customers table)
+- 瀏覽來源
+
+10. 門市銷售記錄表（PhysicalStoreSales）
+- 銷售編號 (PK)
+- 顧客編號 (FK to Customers table)
+- 顧客性別
+- 顧客年齡
+- 店號 (FK to PhysicalStores table)
+- 業務員編號 (FK to Salespeople table)
+- 銷售日期
+- 訂單總額
+
+11. 按摩椅表格（MassageChairs）
+- 按摩椅編號 (PK)
+- 按摩椅名稱
+- 按摩椅價格
