@@ -3,8 +3,41 @@ from django.http import HttpResponse
 from django.utils import timezone
 from datetime import timedelta
 from DB_app.models import *
+from .forms import *
 
+def index(request):
+    return render(request, 'index.html')
 
+def add_data(request):
+    if request.method == 'POST':
+        table = request.POST.get('table')
+        if table == 'customers':
+            form = CustomersForm()
+        elif table == 'massage_chair_usages':
+            form = MassageChairUsagesForm()
+        elif table == 'physical_stores':
+            form = PhysicalStoresForm()
+        elif table == 'physical_store_details':
+            form = PhysicalStoreDetailsForm()
+        elif table == 'customer_orders':
+            form = CustomerOrdersForm()
+        elif table == 'salespeople':
+            form = SalespeopleForm()
+        elif table == 'referral_codes':
+            form = ReferralCodesForm()
+        elif table == 'products':
+            form = ProductsForm()
+        elif table == 'online_store_visits':
+            form = OnlineStoreVisitsForm()
+        elif table == 'physical_store_sales':
+            form = PhysicalStoreSalesForm()
+        elif table == 'massage_chairs':
+            form = MassageChairsForm()
+        else:
+            return HttpResponse('Invalid table name')
+        return render(request, 'add_data.html', {'form': form})
+    else:
+        return HttpResponse('Invalid request method')
 def write_test_data(request):
 
     #check if data exists

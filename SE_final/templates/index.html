@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Add Data</h2>
+            <form method="post" action="{% url 'add_data' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="table-select">Select a table:</label>
+                    <select class="form-control" id="table-select" name="table">
+                        <option value="customers">Customers</option>
+                        <option value="massage_chair_usages">Massage Chair Usages</option>
+                        <option value="physical_stores">Physical Stores</option>
+                        <option value="physical_store_details">Physical Store Details</option>
+                        <option value="customer_orders">Customer Orders</option>
+                        <option value="salespeople">Salespeople</option>
+                        <option value="referral_codes">Referral Codes</option>
+                        <option value="products">Products</option>
+                        <option value="online_store_visits">Online Store Visits</option>
+                        <option value="physical_store_sales">Physical Store Sales</option>
+                        <option value="massage_chairs">Massage Chairs</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Data</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
