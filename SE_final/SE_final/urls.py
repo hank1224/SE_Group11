@@ -19,7 +19,6 @@ from DB_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('write_test_data/', views.write_test_data),
     path('index/', views.index),
-    path('add_data/', views.add_data, name='add_data'),
+    path('create_test_data/', views.create_test_data),
 ]

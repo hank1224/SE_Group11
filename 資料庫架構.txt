@@ -8,7 +8,7 @@
 刪個人推薦代碼
 刪使用推薦代碼
 
-!2. 公共按摩椅使用記錄表（MassageChairUsages）
+!2. 公共按摩椅使用記錄表（MassageChairRecord）
 - 使用紀錄編號 (PK)
 - 顧客編號 (FK to Customers table)
 - 按摩椅編號 (FK to MassageChairs table)
@@ -38,7 +38,7 @@
 - 產品編號 (PK)
 - 產品型號
 - 產品名稱
-! 產品網路價格
+! 產品價格
 + 產品成本
 + 產品保固 [boolen]
 + 產品保固期限 [datetime.delta持續時間格式, default=None]
@@ -65,7 +65,7 @@
     - 店號 (FK to PhysicalStores table)
     - 業務員售出價格
 
-14.售後處理
+14.售後問券表(SalesQuestionnaires)
 - 銷售紀錄編號(FK to SalesRecords table)
 - 銷售過程售後問券分數 [default=None]
 - 售後保固處理問券分數 [default=None]
@@ -96,12 +96,12 @@
 
     月線上銷售總額 = {
         抓 13.銷售紀錄表.銷售方式 == 1, 13.銷售日期 >= 本月第一天, 銷售日期 <= 本月最後一天
-            sum += 13.產品編號(FK to 5.產品表格).產品網路價格
+            sum += 13.產品編號(FK to 5.產品表格).產品價格
         }
 
     月線上淨利 = {
         抓 13.銷售紀錄表.銷售方式 == 1, 13.銷售日期 >= 本月第一天, 銷售日期 <= 本月最後一天
-            sum += 13.產品編號(FK to 5.產品表格).產品網路價格 - 13.產品編號(FK to 5.產品表格).產品成本
+            sum += 13.產品編號(FK to 5.產品表格).產品價格 - 13.產品編號(FK to 5.產品表格).產品成本
         }
 
     月實體店號總銷售總額 = {
