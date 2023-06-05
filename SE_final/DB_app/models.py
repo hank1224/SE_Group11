@@ -77,7 +77,7 @@ class SalesRecords(models.Model):
     # 實體店面使用以下欄位
     salesperson = models.ForeignKey('Salespeople', on_delete=models.CASCADE)
     store = models.ForeignKey('PhysicalStores', on_delete=models.CASCADE)
-    sales_price = models.DecimalField(max_digits=10, decimal_places=2)
+    sales_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
 class SalesQuestionnaires(models.Model):
     sales_record = models.OneToOneField('SalesRecords', primary_key=True, on_delete=models.CASCADE)
