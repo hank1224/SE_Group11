@@ -1,6 +1,7 @@
 # SE_Group11
 
-**並無上傳migrations資料夾內容以及資料庫檔案**
+**有上傳migrations資料夾內容**
+
 ```python
 python manage.py createsuperuser
 python manage.py makemigrations
