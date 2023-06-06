@@ -11,11 +11,3 @@ python manage.py migrate
 ```
 127.0.0.1:8000/write_test_data
 ```
-
-前端的增加資料功能未完成，先用Django內建的後端來增加資料
-
-For error
-    no such table:
-```python
-python manage.py migrate --run-syncdb
-```
