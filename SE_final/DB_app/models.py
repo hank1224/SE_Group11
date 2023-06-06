@@ -42,12 +42,13 @@ class ReferralCodes(models.Model):
     uesd_referral_code = models.CharField(max_length=20)
 
 class Products(models.Model):
+    product_id = models.AutoField(primary_key=True)
     product_model = models.CharField(max_length=255)
     product_name = models.CharField(max_length=255)
     product_price = models.DecimalField(max_digits=10, decimal_places=2)
     product_cost = models.DecimalField(max_digits=10, decimal_places=2)
     product_warranty = models.BooleanField(default=False)
-    product_warranty_period = models.DurationField(default=0)
+    product_warranty_period = models.DurationField(null=True)
 
 class OnlineStoreVisits(models.Model):
     visit_id = models.AutoField(primary_key=True)
@@ -81,12 +82,12 @@ class SalesRecords(models.Model):
 
 class SalesQuestionnaires(models.Model):
     sales_record = models.OneToOneField('SalesRecords', primary_key=True, on_delete=models.CASCADE)
-    sales_process_score = models.IntegerField(default=None)
-    warranty_process_score = models.IntegerField(default=None)
+    sales_process_score = models.IntegerField(null=True)
+    warranty_process_score = models.IntegerField(null=True)
 
 class ExperienceQuestionnaires(models.Model):
     customer = models.ForeignKey('Customers', on_delete=models.CASCADE)
     usage_id = models.ForeignKey('MassageChairRecord', on_delete=models.CASCADE)
     fill_time = models.DateTimeField(auto_now_add=True)
     willingness_to_use_again = models.BooleanField(default=False)
-    massage_chair_mode_satisfaction = models.IntegerField(default=None)
+    massage_chair_mode_satisfaction = models.IntegerField(null=True)
