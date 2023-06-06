@@ -90,7 +90,3 @@ class ExperienceQuestionnaires(models.Model):
     fill_time = models.DateTimeField(auto_now_add=True)
     willingness_to_use_again = models.BooleanField(default=False)
     massage_chair_mode_satisfaction = models.IntegerField(default=None)
-
-
-
-    

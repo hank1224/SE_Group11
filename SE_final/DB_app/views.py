@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import *
 
+import datetime
+
 def index(request):
     return render(request, 'index.html')
 
@@ -24,8 +26,8 @@ def create_test_data(request):
     # Products 建立產品：
 
     
-    prod1 = Products.objects.create(product_model="C300", product_name="椅子A", product_price=10000, product_cost=7000, product_warranty=True, product_warranty_period="365 days")
-    prod2 = Products.objects.create(product_model="C428", product_name="椅子B", product_price=15000, product_cost=9000, product_warranty=False, product_warranty_period="0")
+    prod1 = Products.objects.create(product_model="C300", product_name="椅子A", product_price=10000, product_cost=7000, product_warranty=True, product_warranty_period=datetime.timedelta(days=365))
+    prod2 = Products.objects.create(product_model="C428", product_name="椅子B", product_price=15000, product_cost=9000, product_warranty=False, product_warranty_period=datetime.timedelta(days=0))
     
 
     # Customers：

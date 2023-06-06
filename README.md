@@ -13,3 +13,9 @@ python manage.py migrate
 ```
 
 前端的增加資料功能未完成，先用Django內建的後端來增加資料
+
+For error
+    no such table:
+```python
+python manage.py migrate --run-syncdb
+```
