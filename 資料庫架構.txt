@@ -1,64 +1,69 @@
++0. Django 會員帳號建立
+- Username
+- Password
+- Email
+- 建立時間
+
 1. 顧客資料表（Customers）
-- 顧客編號 (PK)
+刪顧客編號 (PK)
+- Username(FK to Django User table)
 - 顧客名稱
 - 顧客性別 [1:男 2:女 3:其他 4:不願透漏]
-- Email
+刪Email
 - 手機號碼
 - 業務員編號 (FK to Salespeople table)
-刪個人推薦代碼
-刪使用推薦代碼
 
 !2. 公共按摩椅使用記錄表（MassageChairRecord）
 - 使用紀錄編號 (PK)
-- 顧客編號 (FK to Customers table)
+- 顧客編號 (FK to Customers table or default=None)
 - 按摩椅編號 (FK to MassageChairs table)
 - 按摩椅模式編號 (FK to MassageChairModes table)
 - 開始使用時間
++ 付款方式 [1:現金 2:APP]
 
 3. 實體店面表（PhysicalStores）
 - 店號 (PK)
 - 分店名稱
 
-4. 公共按摩椅所屬店面表（MassageChairPhysicalStores）
+刪4. 公共按摩椅所屬店面表（MassageChairPhysicalStores）
 - 店號 (FK to PhysicalStores table)
-刪店營業額
 - 公共按摩椅編號 (FK to MassageChairs table)
 
 6. 業務員表格（Salespeople）
 - 業務員編號 (PK)
 - 業務員姓名
-+ 業務所屬實體店面(FK to PhysicalStores table)
+- 業務所屬實體店面(FK to PhysicalStores table)
 
 7. 推薦代碼表格（ReferralCodes）
-+ 顧客編號 (FK to Customers table)
-! 個人推薦代碼 (PK)
-! 使用推薦代碼
+- 顧客編號 (FK to Customers table)
+- 個人推薦代碼 (PK)
+- 使用推薦代碼
 
-8. 產品表格（Products）
-- 產品編號 (PK)
+8. 產品表（Products）
+刪產品編號 (PK)
 - 產品型號
 - 產品名稱
-! 產品價格
-+ 產品成本
-+ 產品保固 [boolen]
-+ 產品保固期限 [datetime.delta持續時間格式, default=None]
+- 產品價格
+- 產品成本
+- 產品保固 [boolen]
+- 產品保固期限 [datetime.delta持續時間格式, default=None]
 
 9. 線上店面訪問記錄表（OnlineStoreVisits）
 - 訪問編號 (PK)
 - 顧客編號 (FK to Customers table)
 - 商品編號(FK to Products table)
 
-11. 公共按摩椅表格（MassageChairs）
-- 按摩椅編號 (PK)
-- 按摩椅名稱
-- 按摩椅價格
+!11. 公共按摩椅表（MassageChairs）
+- 公共按摩椅編號 (PK)
+- 店號 (FK to PhysicalStores table)
+- 產品型號(FK to Products table)
 
 13.銷售紀錄表(SalesRecords)
 - 銷售紀錄編號 (PK)
 - 銷售方式 [1:線上 2:門市]
 - 顧客編號 (FK to Customers table)
 - 銷售日期
-- 產品編號 (FK to Products table)
+- 產品型號 (FK to Products table)
 
 # 實體店面
     - 業務員編號 (FK to Salespeople table)
@@ -73,6 +78,15 @@
 15.按摩椅模式
 - 按摩椅模式編號 (PK)
 - 按摩椅模式名稱
+
++16.體驗問券表(ExperienceQuestionnaires)
+- 會員編號(FK to Customers table)
+- 填寫時間
+- 再次使用意願 [boolen]
+- 公共按摩椅編號(FK to MassageChairs table)
+- 按摩椅模式(FK to MassageChairModes table)
+- 按摩椅模式滿意度
+- 接收優惠訊息 [boolen]
 
 限制:
 1. 一筆訂單僅能有一個產品
@@ -96,12 +110,12 @@
 
     月線上銷售總額 = {
         抓 13.銷售紀錄表.銷售方式 == 1, 13.銷售日期 >= 本月第一天, 銷售日期 <= 本月最後一天
-            sum += 13.產品編號(FK to 5.產品表格).產品價格
+            sum += 13.產品型號(FK to 5.產品表).產品價格
         }
 
     月線上淨利 = {
         抓 13.銷售紀錄表.銷售方式 == 1, 13.銷售日期 >= 本月第一天, 銷售日期 <= 本月最後一天
-            sum += 13.產品編號(FK to 5.產品表格).產品價格 - 13.產品編號(FK to 5.產品表格).產品成本
+            sum += 13.產品型號(FK to 5.產品表).產品價格 - 13.產品型號(FK to 5.產品表).產品成本
         }
 
     月實體店號總銷售總額 = {
@@ -119,12 +133,12 @@
 
     月實體店號淨利 = {
         抓 13.銷售紀錄表.銷售方式 == 2, 13.銷售日期 >= 本月第一天, 銷售日期 <= 本月最後一天, 13.店號 == 要求的店號
-            sum += 13.業務員售出價格 - 13.產品編號(FK to 5.產品表格).產品成本
+            sum += 13.業務員售出價格 - 13.產品型號(FK to 5.產品表).產品成本
         }
 
     月實體店面總淨利 = {
         抓 13.銷售紀錄表.銷售方式 == 2, 13.銷售日期 >= 本月第一天, 銷售日期 <= 本月最後一天
-            sum += 13.業務員售出價格 - 13.產品編號(FK to 5.產品表格).產品成本
+            sum += 13.業務員售出價格 - 13.產品型號(FK to 5.產品表).產品成本
         },
         {
             sum += 所有 月實體店號淨利
@@ -134,6 +148,8 @@
 
     月總淨利 = 月線上淨利 + 月實體店面淨利
 
+
+
 銷售員:
 
     單銷售員月總銷售總額 = {
@@ -141,4 +157,32 @@
             sum += 13.業務員售出價格
         }
 
+
+
+公共按摩椅:
+
+    指定公共按摩椅月總使用次數 = {
+        抓 2.公共按摩椅使用記錄表（MassageChairRecord）.開始使用時間 >= 本月第一天, 使用時間 <= 本月最後一天, 14.按摩椅編號 == 要求的按摩椅編號
+            sum += 1
+        }
+
+    指定公共按摩椅月現金收入 = {
+        抓 2.公共按摩椅使用記錄表（MassageChairRecord）.開始使用時間 >= 本月第一天, 使用時間 <= 本月最後一天, 14.按摩椅編號 == 要求的按摩椅編號, 付款方式 == 1
+            sum += 1 * 訂定價格
+        }
+
+    指定公共按摩椅月APP付款收入 = {
+        抓 2.公共按摩椅使用記錄表（MassageChairRecord）.開始使用時間 >= 本月第一天, 使用時間 <= 本月最後一天, 14.按摩椅編號 == 要求的按摩椅編號, 付款方式 == 2
+            sum += 1 * 訂定價格
+        }
+
+    指定公共按摩椅月總收入 = 指定公共按摩椅月總使用次數 * 訂定價格
+
+    所有公共按摩椅月現金收入 = 所有 指定公共按摩椅月現金收入
+
+    所有公共按摩椅月APP付款收入 = 所有 指定公共按摩椅月APP付款收入
+
+    所有公共按摩椅月總收入 = {
+        sum += 所有 指定公共按摩椅月總收入
+    }
 
