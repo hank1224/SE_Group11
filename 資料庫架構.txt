@@ -83,10 +83,8 @@
 - 會員編號(FK to Customers table)
 - 填寫時間
 - 再次使用意願 [boolen]
-- 公共按摩椅編號(FK to MassageChairs table)
-- 按摩椅模式(FK to MassageChairModes table)
+- 按摩椅紀錄編號 (FK to MassageChairRecord table)
 - 按摩椅模式滿意度
-- 接收優惠訊息 [boolen]
 
 限制:
 1. 一筆訂單僅能有一個產品

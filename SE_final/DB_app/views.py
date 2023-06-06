@@ -1,103 +1,114 @@
 from django.shortcuts import render
-from django.utils import timezone
 from django.http import HttpResponse
-from .models import Customers, MassageChairRecord, PhysicalStores, MassageChairPhysicalStores, Salespeople, ReferralCodes, Products, OnlineStoreVisits, MassageChairs, MassageChairModes, SalesRecords, SalesQuestionnaires
+from .models import *
 
 def index(request):
     return render(request, 'index.html')
 
 def create_test_data(request):
-    # 建立實體店面資料
-    physical_store1 = PhysicalStores.objects.create(branch_name='Store A')
-    physical_store2 = PhysicalStores.objects.create(branch_name='Store B')
-    physical_store3 = PhysicalStores.objects.create(branch_name='Store C')
-    physical_store4 = PhysicalStores.objects.create(branch_name='Store D')
-    physical_store5 = PhysicalStores.objects.create(branch_name='Store E')
-    print("建立實體店面資料")
 
-    # 建立業務人員資料
-    salesperson1 = Salespeople.objects.create(salesperson_name='Jack', store_id=physical_store1)
-    salesperson2 = Salespeople.objects.create(salesperson_name='Rose', store_id=physical_store2)
-    salesperson3 = Salespeople.objects.create(salesperson_name='David', store_id=physical_store3)
-    salesperson4 = Salespeople.objects.create(salesperson_name='Amy', store_id=physical_store4)
-    salesperson5 = Salespeople.objects.create(salesperson_name='Bob', store_id=physical_store5)
-    print("建立業務人員資料")
+    # 首先，我們需要確定所有的外建約束在測試資料中也一定要存在。
+    # PhysicalStores 先建立一些店鋪：
 
-    # 建立顧客資料
-    customer1 = Customers.objects.create(customer_name='John', customer_gender='1', email='john@example.com', phone_number='0912345678', salesperson=salesperson1)
-    customer2 = Customers.objects.create(customer_name='Mary', customer_gender='2', email='mary@example.com', phone_number='0923456789', salesperson=salesperson2)
-    customer3 = Customers.objects.create(customer_name='Tom', customer_gender='1', email='tom@example.com', phone_number='0934567890', salesperson=salesperson3)
-    customer4 = Customers.objects.create(customer_name='Jane', customer_gender='2', email='jane@example.com', phone_number='0945678901', salesperson=salesperson4)
-    customer5 = Customers.objects.create(customer_name='Peter', customer_gender='1', email='peter@example.com', phone_number='0956789012', salesperson=salesperson5)
-    print("建立顧客資料")
+    store1 = PhysicalStores.objects.create(branch_name="A店")
+    store2 = PhysicalStores.objects.create(branch_name="B店")
 
-    # 建立按摩椅使用紀錄資料
-    massage_chair1 = MassageChairs.objects.create(massage_chair_name='Massage Chair A', massage_chair_price=10000)
-    massage_chair2 = MassageChairs.objects.create(massage_chair_name='Massage Chair B', massage_chair_price=20000)
-    massage_chair3 = MassageChairs.objects.create(massage_chair_name='Massage Chair C', massage_chair_price=30000)
-    massage_chair_mode1 = MassageChairModes.objects.create(massage_chair_mode_name='Mode 1')
-    massage_chair_mode2 = MassageChairModes.objects.create(massage_chair_mode_name='Mode 2')
-    massage_chair_record1 = MassageChairRecord.objects.create(customer=customer1, massage_chair=massage_chair1, massage_chair_mode=massage_chair_mode1, start_time=timezone.now())
-    massage_chair_record2 = MassageChairRecord.objects.create(customer=customer2, massage_chair=massage_chair2, massage_chair_mode=massage_chair_mode2, start_time=timezone.now())
-    massage_chair_record3 = MassageChairRecord.objects.create(customer=customer3, massage_chair=massage_chair3, massage_chair_mode=massage_chair_mode1, start_time=timezone.now())
-    massage_chair_record4 = MassageChairRecord.objects.create(customer=customer4, massage_chair=massage_chair1, massage_chair_mode=massage_chair_mode2, start_time=timezone.now())
-    massage_chair_record5 = MassageChairRecord.objects.create(customer=customer5, massage_chair=massage_chair2, massage_chair_mode=massage_chair_mode1, start_time=timezone.now())
-    print("建立按摩椅使用紀錄資料")
+    # Salespeople 在每個店鋪中新增銷售員：
 
-    # 建立按摩椅與實體店面關聯資料
-    massage_chair_physical_store1 = MassageChairPhysicalStores.objects.create(store=physical_store1, public_massage_chair=massage_chair1)
-    massage_chair_physical_store2 = MassageChairPhysicalStores.objects.create(store=physical_store2, public_massage_chair=massage_chair2)
-    massage_chair_physical_store3 = MassageChairPhysicalStores.objects.create(store=physical_store3, public_massage_chair=massage_chair3)
-    massage_chair_physical_store4 = MassageChairPhysicalStores.objects.create(store=physical_store4, public_massage_chair=massage_chair1)
-    massage_chair_physical_store5 = MassageChairPhysicalStores.objects.create(store=physical_store5, public_massage_chair=massage_chair2)
-    print("建立按摩椅與實體店面關聯資料")
+    
+    staff1 = Salespeople.objects.create(salesperson_name="小明", store_id=store1)
+    staff2 = Salespeople.objects.create(salesperson_name="小王", store_id=store2)
+    staff3 = Salespeople.objects.create(salesperson_name="小林", store_id=store2)
+    
 
-    # 建立推薦碼資料
-    referral_code1 = ReferralCodes.objects.create(customer=customer1, referral_code='REF001', uesd_referral_code='')
-    referral_code2 = ReferralCodes.objects.create(customer=customer2, referral_code='REF002', uesd_referral_code='')
-    referral_code3 = ReferralCodes.objects.create(customer=customer3, referral_code='REF003', uesd_referral_code='')
-    referral_code4 = ReferralCodes.objects.create(customer=customer4, referral_code='REF004', uesd_referral_code='')
-    referral_code5 = ReferralCodes.objects.create(customer=customer5, referral_code='REF005', uesd_referral_code='')
-    print("建立推薦碼資料")
+    # Products 建立產品：
 
-    # 建立產品資料
-    product1 = Products.objects.create(product_model='Product A', product_name='Product A', product_price=1000, product_cost=500, product_warranty=True, product_warranty_period=timezone.timedelta(days=365))
-    product2 = Products.objects.create(product_model='Product B', product_name='Product B', product_price=2000, product_cost=1000, product_warranty=True, product_warranty_period=timezone.timedelta(days=365))
-    product3 = Products.objects.create(product_model='Product C', product_name='Product C', product_price=3000, product_cost=1500, product_warranty=True, product_warranty_period=timezone.timedelta(days=365))
-    product4 = Products.objects.create(product_model='Product D', product_name='Product D', product_price=4000, product_cost=2000, product_warranty=True, product_warranty_period=timezone.timedelta(days=365))
-    product5 = Products.objects.create(product_model='Product E', product_name='Product E', product_price=5000, product_cost=2500, product_warranty=True, product_warranty_period=timezone.timedelta(days=365))
-    print("建立產品資料")
+    
+    prod1 = Products.objects.create(product_model="C300", product_name="椅子A", product_price=10000, product_cost=7000, product_warranty=True, product_warranty_period="365 days")
+    prod2 = Products.objects.create(product_model="C428", product_name="椅子B", product_price=15000, product_cost=9000, product_warranty=False, product_warranty_period="0")
+    
 
-    # 建立線上商店訪問資料
-    online_store_visit1 = OnlineStoreVisits.objects.create(customer=customer1, product=product1)
-    online_store_visit2 = OnlineStoreVisits.objects.create(customer=customer2, product=product2)
-    online_store_visit3 = OnlineStoreVisits.objects.create(customer=customer3, product=product3)
-    online_store_visit4 = OnlineStoreVisits.objects.create(customer=customer4, product=product4)
-    online_store_visit5 = OnlineStoreVisits.objects.create(customer=customer5, product=product5)
-    print("建立線上商店訪問資料")
+    # Customers：
 
-    # 建立銷售紀錄資料
-    sales_record1 = SalesRecords.objects.create(customer=customer1, product=product1, sales_time=timezone.now(), sales_type='1')
-    sales_record2 = SalesRecords.objects.create(customer=customer2, product=product2, sales_time=timezone.now(), sales_type='1')
-    sales_record3 = SalesRecords.objects.create(customer=customer3, product=product3, sales_time=timezone.now(), sales_type='1')
-    sales_record4 = SalesRecords.objects.create(customer=customer4, product=product4, sales_time=timezone.now(), sales_type='1')
-    sales_record5 = SalesRecords.objects.create(customer=customer5, product=product5, sales_time=timezone.now(), sales_type='1')
-    print("建立銷售紀錄資料")
+    
+    #user1
+    user1 = User.objects.create_user(
+        username="user1",
+        password="testpassword"
+    )
+    cust1 = Customers.objects.create(
+        username=user1,
+        customer_name="王大明",
+        customer_gender="1",
+        phone_number="0912345678",
+        salesperson=staff1
+    )
 
-    # 建立實體店面銷售紀錄資料
-    sales_record6 = SalesRecords.objects.create(customer=customer1, product=product1, sales_time=timezone.now(), sales_type='2', salesperson=salesperson1, store=physical_store1, sales_price=1200)
-    sales_record7 = SalesRecords.objects.create(customer=customer2, product=product2, sales_time=timezone.now(), sales_type='2', salesperson=salesperson2, store=physical_store2, sales_price=2200)
-    sales_record8 = SalesRecords.objects.create(customer=customer3, product=product3, sales_time=timezone.now(), sales_type='2', salesperson=salesperson3, store=physical_store3, sales_price=3200)
-    sales_record9 = SalesRecords.objects.create(customer=customer4, product=product4, sales_time=timezone.now(), sales_type='2', salesperson=salesperson4, store=physical_store4, sales_price=4200)
-    sales_record10 = SalesRecords.objects.create(customer=customer5, product=product5, sales_time=timezone.now(), sales_type='2', salesperson=salesperson5, store=physical_store5, sales_price=5200)
-    print("建立實體店面銷售紀錄資料")
+    #user2
+    user2 = User.objects.create_user(
+        username="user2",
+        password="testpassword"
+    )
+    cust2 = Customers.objects.create(
+        username=user2,
+        customer_name="陳小美",
+        customer_gender="2",
+        phone_number="0987654321",
+        salesperson=staff3
+    )
+    
 
-    # 建立銷售問卷資料
-    sales_questionnaire1 = SalesQuestionnaires.objects.create(sales_record=sales_record1, sales_process_score=5, warranty_process_score=2)
-    sales_questionnaire2 = SalesQuestionnaires.objects.create(sales_record=sales_record2, sales_process_score=1, warranty_process_score=5)
-    sales_questionnaire3 = SalesQuestionnaires.objects.create(sales_record=sales_record3, sales_process_score=3, warranty_process_score=4)
-    sales_questionnaire4 = SalesQuestionnaires.objects.create(sales_record=sales_record4, sales_process_score=1, warranty_process_score=1)
-    sales_questionnaire5 = SalesQuestionnaires.objects.create(sales_record=sales_record5, sales_process_score=5, warranty_process_score=1)
-    print("建立銷售問卷資料")
+    # MassageChairModes 建立按摩椅模式：
 
-    return HttpResponse('<h1>資料建立完成</h1>')
+    
+    mode1 = MassageChairModes.objects.create(massage_chair_mode_name="模式A")
+    mode2 = MassageChairModes.objects.create(massage_chair_mode_name="模式B")
+    
+
+    # MassageChairs 建立按摩椅：
+
+    
+    chair1 = MassageChairs.objects.create(store_id=store1, product_model=prod1)
+    chair2 = MassageChairs.objects.create(store_id=store2, product_model=prod2)
+    
+
+    # MassageChairRecord 建立按摩椅紀錄：
+
+    
+    record1 = MassageChairRecord.objects.create(customer=cust1, massage_chair=chair1, massage_chair_mode=mode1, payment="1")
+    record2 = MassageChairRecord.objects.create(customer=cust2, massage_chair=chair2, massage_chair_mode=mode2, payment="2")
+    
+
+    # OnlineStoreVisits 建立線上商店參觀紀錄：
+
+    
+    visit1 = OnlineStoreVisits.objects.create(customer=cust1, product=prod1)
+    visit2 = OnlineStoreVisits.objects.create(customer=cust2, product=prod2)
+    
+
+    # SalesRecords 建立銷售紀錄：
+
+    
+    sales1 = SalesRecords.objects.create(customer=cust1, product=prod1, sales_type="2", salesperson=staff1, store=store1, sales_price=10000)
+    sales2 = SalesRecords.objects.create(customer=cust2, product=prod2, sales_type="2", salesperson=staff3, store=store2, sales_price=15000)
+    
+
+    # ReferralCodes 建立推薦序號：
+
+    
+    referral1 = ReferralCodes.objects.create(customer=cust1, referral_code="ABC1234", uesd_referral_code="")
+    
+
+    # ExperienceQuestionnaires 建立體驗問卷：
+    
+    ques1 = ExperienceQuestionnaires.objects.create(customer=cust1, usage_id=record1, willingness_to_use_again=True, massage_chair_mode_satisfaction=8)
+    ques2 = ExperienceQuestionnaires.objects.create(customer=cust2, usage_id=record2, willingness_to_use_again=False, massage_chair_mode_satisfaction=6)
+    
+
+    # SalesQuestionnaires 建立銷售問卷：
+
+    
+    sales_ques1 = SalesQuestionnaires.objects.create(sales_record=sales1, sales_process_score=9, warranty_process_score=8)
+    sales_ques2 = SalesQuestionnaires.objects.create(sales_record=sales2, sales_process_score=6, warranty_process_score=7)
+    
+    return HttpResponse("測試資料建立完成！")
