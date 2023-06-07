@@ -1,33 +1,27 @@
-+0. Django 會員帳號建立
+0. Django 會員帳號建立
 - Username
 - Password
 - Email
 - 建立時間
 
 1. 顧客資料表（Customers）
-刪顧客編號 (PK)
 - Username(FK to Django User table)
 - 顧客名稱
 - 顧客性別 [1:男 2:女 3:其他 4:不願透漏]
-刪Email
 - 手機號碼
 - 業務員編號 (FK to Salespeople table)
 
-!2. 公共按摩椅使用記錄表（MassageChairRecord）
+2. 公共按摩椅使用記錄表（MassageChairRecord）
 - 使用紀錄編號 (PK)
 - 顧客編號 (FK to Customers table or default=None)
 - 按摩椅編號 (FK to MassageChairs table)
 - 按摩椅模式編號 (FK to MassageChairModes table)
 - 開始使用時間
-+ 付款方式 [1:現金 2:APP]
+- 付款方式 [1:現金 2:APP]
 
 3. 實體店面表（PhysicalStores）
 - 店號 (PK)
 - 分店名稱
-
-刪4. 公共按摩椅所屬店面表（MassageChairPhysicalStores）
-- 店號 (FK to PhysicalStores table)
-- 公共按摩椅編號 (FK to MassageChairs table)
 
 6. 業務員表格（Salespeople）
 - 業務員編號 (PK)
@@ -40,7 +34,6 @@
 - 使用推薦代碼
 
 8. 產品表（Products）
-刪產品編號 (PK)
 - 產品型號
 - 產品名稱
 - 產品價格
@@ -53,7 +46,7 @@
 - 顧客編號 (FK to Customers table)
 - 商品編號(FK to Products table)
 
-!11. 公共按摩椅表（MassageChairs）
+11. 公共按摩椅表（MassageChairs）
 - 公共按摩椅編號 (PK)
 - 店號 (FK to PhysicalStores table)
 - 產品型號(FK to Products table)
@@ -79,7 +72,7 @@
 - 按摩椅模式編號 (PK)
 - 按摩椅模式名稱
 
-+16.體驗問券表(ExperienceQuestionnaires)
+16.體驗問券表(ExperienceQuestionnaires)
 - 會員編號(FK to Customers table)
 - 填寫時間
 - 再次使用意願 [boolen]
