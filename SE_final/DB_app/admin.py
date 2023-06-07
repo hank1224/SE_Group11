@@ -40,6 +40,10 @@ class SalesQuestionnairesAdmin(admin.ModelAdmin):
 class ExperienceQuestionnairesAdmin(admin.ModelAdmin):
     list_display = ('customer', 'usage_id', 'fill_time', 'willingness_to_use_again', 'massage_chair_mode_satisfaction')
 
+class ExperienceReservationsAdmin(admin.ModelAdmin):
+    list_display = ('reservation_id', 'customer', 'store_id', 'reservation_time', 'Salespeople')
+
+
 admin.site.register(Customers, CustomersAdmin)
 admin.site.register(MassageChairRecord, MassageChairRecordAdmin)
 admin.site.register(PhysicalStores, PhysicalStoresAdmin)
@@ -52,3 +56,4 @@ admin.site.register(SalesRecords, SalesRecordsAdmin)
 admin.site.register(Salespeople, SalespeopleAdmin)
 admin.site.register(SalesQuestionnaires, SalesQuestionnairesAdmin)
 admin.site.register(ExperienceQuestionnaires, ExperienceQuestionnairesAdmin)
+admin.site.register(ExperienceReservations, ExperienceReservationsAdmin)

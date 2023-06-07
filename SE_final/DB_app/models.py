@@ -90,3 +90,10 @@ class ExperienceQuestionnaires(models.Model):
     fill_time = models.DateTimeField(auto_now_add=True)
     willingness_to_use_again = models.BooleanField(default=False)
     massage_chair_mode_satisfaction = models.IntegerField(null=True)
+
+class ExperienceReservations(models.Model):
+    reservation_id = models.AutoField(primary_key=True)
+    customer = models.ForeignKey('Customers', on_delete=models.CASCADE)
+    reservation_time = models.DateTimeField()
+    store_id = models.ForeignKey('PhysicalStores', on_delete=models.CASCADE)
+    Salespeople = models.ForeignKey('Salespeople', on_delete=models.CASCADE)

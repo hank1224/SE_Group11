@@ -79,6 +79,13 @@
 - 按摩椅紀錄編號 (FK to MassageChairRecord table)
 - 按摩椅模式滿意度
 
++17. 預約體驗表(ExperienceReservations)
+- 預約編號 (PK)
+- 顧客編號 (FK to Customers table)
+- 預約時間
+- 預約店號 (FK to PhysicalStores table)
+- 業務員編號 (FK to Salespeople table)
+
 限制:
 1. 一筆訂單僅能有一個產品
 2. 顧客的負責業務員無法更換
