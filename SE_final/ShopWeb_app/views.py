@@ -10,18 +10,37 @@ from DB_app.models import *
 from ShopWeb_app.forms import *
 
 import datetime
-# Create your views here.
+
+
+from django.contrib.auth.decorators import user_passes_test
+
+def customer_login_required(function=None):
+    actual_decorator = user_passes_test(
+        lambda u: u.is_active and u.is_superuser,
+        login_url='/shop/login'
+    )
+    if function:
+        return actual_decorator(function)
+    return actual_decorator
+
+
+
 def index(request): 
     products = Products.objects.all() 
-    return render(request, 'index.html', {'products': products})
+    return render(request, 'ShopWeb/index.html', {'products': products})
 
-@login_required
+@customer_login_required
 def buy_product(request, product_id):
     buying = Products.objects.get(product_id=product_id)
     price = buying.product_price
     SalesRecords.objects.create(customer=request.user.customers, product=buying, sales_type='1', sales_price=price)
     return redirect('index')
-    
+
+@customer_login_required
+def order(request):
+    records = SalesRecords.objects.get(customer=request.user.customers)
+    return render(request, 'ShopWeb/order.html', {'records': records})
+
 def login_view(request): 
     if request.method == 'POST': 
         form = AuthenticationForm(data=request.POST) 
@@ -31,8 +50,8 @@ def login_view(request):
             messages.success(request, f"Welcome back, {user.username}!") 
             return redirect('index') 
     else:
-        form = AuthenticationForm() 
-    return render(request, 'login.html', {'form': form}) 
+        form = AuthenticationForm()
+    return render(request, 'ShopWeb/login.html', {'form': form}) 
 
 def register(request):
     if request.method == 'POST':
@@ -49,4 +68,5 @@ def register(request):
             return redirect('index')
     else:
         form = CustomerRegistrationForm()
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'ShopWeb/register.html', {'form': form})
+

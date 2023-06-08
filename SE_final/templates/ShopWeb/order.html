@@ -1,0 +1,60 @@
+{% extends 'ShopWeb/base.html' %}
+
+{% block content %}
+
+<div class="container my-5">
+  <h2 class="text-center mb-5">訂單資訊</h2>
+  
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+
+      {% if records %}
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">商品名稱</th>
+            <th scope="col">銷售時間</th>
+            <th scope="col">銷售類型</th>
+            <th scope="col">銷售人員</th>
+            <th scope="col">實體店面</th>
+            <th scope="col">銷售價格</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for record in records %}
+          <tr>
+            <th scope="row">{{ record.sales_record_id }}</th>
+            <td>{{ record.product.name }}</td>
+            <td>{{ record.sales_time }}</td>
+            <td>{{ record.get_sales_type_display }}</td>
+            {% if record.salesperson %}
+            <td>{{ record.salesperson.name }}</td>
+            {% else %}
+            <td>NULL</td>
+            {% endif %}
+            {% if record.store %}
+            <td>{{ record.store.name }}</td>
+            {% else %}
+            <td>NULL</td>
+            {% endif %}
+            <td>{{ record.sales_price }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p class="text-center">目前沒有訂單資訊。</p>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+// 可以在這裡加入JavaScript程式碼
+</script>
+{% endblock %}

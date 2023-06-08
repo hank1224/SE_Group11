@@ -13,7 +13,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light"> 
         <a class="navbar-brand" href="{% url 'index' %}"> 
             <img src="{% static 'images/logo.jpg' %}" width="30" height="30" class="d-inline-block align-top" alt=""> 
-            Bakery 
+            SE_Group11
         </a> 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> 
             <span class="navbar-toggler-icon"></span> 
@@ -41,7 +41,7 @@
                         Welcome, {{ user.username }} 
                     </a> 
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown"> 
-                        <a class="dropdown-item" href="#">Orders</a> 
+                        <a class="dropdown-item" href="{% url 'order' %}">Orders</a> 
                         <div class="dropdown-divider"></div> 
                         <a class="dropdown-item" href="{% url 'logout' %}">Logout</a> 
                     </div> 
