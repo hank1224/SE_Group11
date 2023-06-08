@@ -7,68 +7,13 @@ from django.utils import timezone
 from django.http import HttpResponse
 
 from .models import *
-from .forms import *
-
 import datetime
 
-def index(request): 
-    products = Products.objects.all() 
-    return render(request, 'index.html', {'products': products})
-
-@login_required
-def buy_product(request, product_id):
-    buying = Products.objects.get(product_id=product_id)
-    price = buying.product_price
-    SalesRecords.objects.create(customer=request.user.customers, product=buying, sales_type='1', sales_price=price)
-    return redirect('index')
-    
-def login_view(request): 
-    if request.method == 'POST': 
-        form = AuthenticationForm(data=request.POST) 
-        if form.is_valid(): 
-            user = form.get_user() 
-            login(request, user) 
-            messages.success(request, f"Welcome back, {user.username}!") 
-            return redirect('index') 
-    else:
-        form = AuthenticationForm() 
-    return render(request, 'login.html', {'form': form}) 
-
-def register(request):
-    if request.method == 'POST':
-        form = CustomerRegistrationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            customer_name = form.cleaned_data['customer_name']
-            customer_gender = form.cleaned_data['customer_gender']
-            phone_number = form.cleaned_data['phone_number']
-            Customers.objects.create(username=user, customer_name=customer_name, customer_gender=customer_gender,
-                                     phone_number=phone_number)
-            login(request, user)
-            messages.success(request, f"Welcome, {user.username}!")
-            return redirect('index')
-    else:
-        form = CustomerRegistrationForm()
-    return render(request, 'register.html', {'form': form})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def create_test_data(request):
+
+    # 檢查是否已建立過測試資料
+    if len(PhysicalStores.objects.all()) > 0:
+        return HttpResponse("<h1>已建立過測試資料</h1>")
 
     # 首先，我們需要確定所有的外建約束在測試資料中也一定要存在。
     # PhysicalStores 先建立一些店鋪：

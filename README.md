@@ -10,5 +10,9 @@ python manage.py migrate
 
 **建立測試數據url:**
 ```
-127.0.0.1:8000/write_test_data
+127.0.0.1:8000/DB/create_test_data/
+```
+
+**顧客用網站:**
+127.0.0.1:8000/shop/
 ```

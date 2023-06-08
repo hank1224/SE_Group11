@@ -15,12 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from . import settings
-from django.conf.urls.static import static
-from DB_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('create_test_data/', views.create_test_data),
-    path('shop/', include('DB_app.urls')),
+    path('DB/', include('DB_app.urls')),
+    path('shop/', include('ShopWeb_app.urls')),
 ]
