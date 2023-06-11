@@ -14,5 +14,6 @@ python manage.py migrate
 ```
 
 **顧客用網站:**
+```
 127.0.0.1:8000/shop/
 ```
