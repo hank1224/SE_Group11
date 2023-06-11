@@ -38,8 +38,13 @@ def buy_product(request, product_id):
 
 @customer_login_required
 def order(request):
-    records = SalesRecords.objects.get(customer=request.user.customers)
+    records = SalesRecords.objects.filter(customer=request.user.customers)
     return render(request, 'ShopWeb/order.html', {'records': records})
+
+@customer_login_required
+def warranty(request):
+    records = SalesRecords.objects.filter(customer=request.user.customers)
+    return render(request, 'ShopWeb/warranty.html', {'records': records})
 
 def login_view(request): 
     if request.method == 'POST': 

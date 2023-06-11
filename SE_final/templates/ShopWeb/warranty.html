@@ -1,9 +1,9 @@
 {% extends 'ShopWeb/base.html' %}
-
+{% load custom_filters %} 
 {% block content %}
 
 <div class="container my-5">
-  <h2 class="text-center mb-5">訂單資訊</h2>
+  <h2 class="text-center mb-5">保固資料</h2>
   
   <div class="row justify-content-center">
     <div class="col-12 col-lg-8">
@@ -16,10 +16,9 @@
               <th scope="col">訂單ID</th>
               <th scope="col">商品名稱</th>
               <th scope="col">銷售時間</th>
-              <th scope="col">銷售類型</th>
-              <th scope="col">銷售人員</th>
-              <th scope="col">實體店面</th>
-              <th scope="col">銷售價格</th>
+              <th scope="col">保固</th>
+              <th scope="col">保固截止</th>
+              <th scope="col">預約服務</th>
             </tr>
           </thead>
           <tbody>
@@ -28,18 +27,17 @@
               <th scope="row">{{ record.sales_record_id }}</th>
               <td>{{ record.product.product_name }}</td>
               <td>{{ record.sales_time|date:"Y年n月j日 H:i" }}</td>
-              <td>{{ record.get_sales_type_display }}</td>
+              <td>{{ record.product.product_warranty|yesno:"有,無" }}</td>
+              {% if record.product.product_warranty == True %}
+              <td>{{ record.sales_time|add_years:1|date:"Y年n月j日" }}</td>
+              {% else %}
+              <td>NULL</td>
+              {% endif %}
               {% if record.salesperson %}
-              <td>{{ record.salesperson.salesperson_name }}</td>
+              <td><a href="#">{{ record.salesperson.salesperson_name }}</a></td>
               {% else %}
               <td>NULL</td>
               {% endif %}
-              {% if record.store %}
-              <td>{{ record.store.branch_name }}</td>
-              {% else %}
-              <td>NULL</td>
-              {% endif %}
-              <td>{{ record.sales_price }}</td>
             </tr>
             {% endfor %}
           </tbody>

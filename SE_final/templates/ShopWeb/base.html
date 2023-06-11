@@ -24,12 +24,12 @@
                 <li class="nav-item {% block home_active %}{% endblock %}"> 
                     <a class="nav-link" href="{% url 'index' %}">Home</a> 
                 </li> 
-                <li class="nav-item {% block menu_active %}{% endblock %}"> 
-                    <a class="nav-link" href="#">Menu</a> 
-                </li> 
                 {% if user.is_authenticated %} 
+                <li class="nav-item {% block menu_active %}{% endblock %}"> 
+                    <a class="nav-link" href="{% url 'order' %}">Orders</a> 
+                </li> 
                 <li class="nav-item {% block cart_active %}{% endblock %}"> 
-                    <a class="nav-link" href="#">Cart</a> 
+                    <a class="nav-link" href="{% url 'warranty' %}">Warranty</a> 
                 </li> 
                 {% endif %} 
             </ul> 
@@ -41,7 +41,7 @@
                         Welcome, {{ user.username }} 
                     </a> 
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown"> 
-                        <a class="dropdown-item" href="{% url 'order' %}">Orders</a> 
+                        <a class="dropdown-item" href="#}">Edit Profile</a> 
                         <div class="dropdown-divider"></div> 
                         <a class="dropdown-item" href="{% url 'logout' %}">Logout</a> 
                     </div> 
