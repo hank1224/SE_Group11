@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages 
 from django.contrib.auth import authenticate, login 
 from django.contrib.auth.forms import AuthenticationForm 
-from django.utils import timezone
 from django.http import HttpResponse
 
 from DB_app.models import *

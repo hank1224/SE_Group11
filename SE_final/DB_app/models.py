@@ -39,7 +39,7 @@ class Salespeople(models.Model):
 class ReferralCodes(models.Model):
     customer = models.OneToOneField('Customers', on_delete=models.CASCADE)
     referral_code = models.CharField(primary_key=True, max_length=20)
-    uesd_referral_code = models.CharField(max_length=20)
+    used_referral_code = models.CharField(max_length=20, null=True)
 
 class Products(models.Model):
     product_id = models.AutoField(primary_key=True)
@@ -85,6 +85,7 @@ class SalesQuestionnaires(models.Model):
     warranty_process_score = models.IntegerField(null=True)
 
 class ExperienceQuestionnaires(models.Model):
+    
     customer = models.ForeignKey('Customers', on_delete=models.CASCADE)
     usage_id = models.ForeignKey('MassageChairRecord', on_delete=models.CASCADE)
     fill_time = models.DateTimeField(auto_now_add=True)

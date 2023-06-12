@@ -13,7 +13,7 @@ class PhysicalStoresAdmin(admin.ModelAdmin):
     list_display = ('store_id', 'branch_name')
 
 class ReferralCodesAdmin(admin.ModelAdmin):
-    list_display = ('customer', 'referral_code', 'uesd_referral_code')
+    list_display = ('customer', 'referral_code', 'used_referral_code')
 
 class ProductsAdmin(admin.ModelAdmin):
     list_display = ('product_model', 'product_name', 'product_price', 'product_cost', 'product_warranty')

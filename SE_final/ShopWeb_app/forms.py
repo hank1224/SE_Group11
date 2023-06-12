@@ -76,7 +76,7 @@ class SalespersonForm(forms.ModelForm):
 class ReferralCodeForm(forms.ModelForm):
     class Meta:
         model = ReferralCodes
-        fields = ['customer', 'referral_code', 'uesd_referral_code']
+        fields = ['customer', 'referral_code', 'used_referral_code']
 
 class MassageChairForm(forms.ModelForm):
     class Meta:
