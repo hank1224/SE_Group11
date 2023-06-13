@@ -9,6 +9,12 @@ from DB_app.models import *
 from ShopWeb_app.forms import *
 from ShopWeb_app.models import CustomerWebViews
 
+from django.core.mail import send_mail, EmailMessage
+from django.template.loader import render_to_string
+from SE_final import settings
+from django.core.mail import EmailMultiAlternatives
+from django.utils.html import strip_tags
+
 # 登入狀態確認，並且區隔客戶與員工
 def customer_login_required(view_func):
     def wrapper(request, *args, **kwargs):
@@ -93,3 +99,19 @@ def edit_profile(request):
     else:
         form = CustomerEditProfileForm(instance=request.user.customers)
     return render(request, 'ShopWeb/edit_profile.html', {'form': form})
+
+# 寄信
+def send_ad_email(customer):
+    customer = Customers.objects.get(customer_id=customer.customer_id)
+
+    email_subject = '按摩椅推銷'
+    email_template = 'Email/ad.html'
+    from_email = settings.EMAIL_HOST_USER
+    to_email = ['hank20011224@gmail.com']
+
+    html_content = render_to_string(email_template, {'customer': customer.customer_name})
+    text_content = strip_tags(html_content)
+
+    email = EmailMultiAlternatives(email_subject, text_content, from_email, to_email)
+    email.attach_alternative(html_content, "text/html")
+    email.send()

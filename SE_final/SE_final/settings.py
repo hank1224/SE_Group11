@@ -129,3 +129,16 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+import json
+with open('secret.json', 'r') as file:
+    data = json.load(file)
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  #SMTP伺服器
+EMAIL_PORT = 587  #TLS通訊埠號
+EMAIL_USE_TLS = True  #開啟TLS(傳輸層安全性)
+EMAIL_HOST_USER = data.get("EMAIL_HOST_USER")  #寄件者電子郵件
+EMAIL_HOST_PASSWORD = data.get("EMAIL_HOST_PASSWORD")  #Gmail應用程式的密碼
