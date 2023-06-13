@@ -13,7 +13,7 @@ class Customers(models.Model):
     ]
     customer_gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     phone_number = models.CharField(max_length=20)
-    salesperson = models.ForeignKey('Salespeople', on_delete=models.CASCADE, null=True)
+    salesperson = models.ForeignKey('Salespeople', on_delete=models.CASCADE, blank=True)
 
 class MassageChairRecord(models.Model):
     usage_id = models.AutoField(primary_key=True)
@@ -39,7 +39,7 @@ class Salespeople(models.Model):
 class ReferralCodes(models.Model):
     customer = models.OneToOneField('Customers', on_delete=models.CASCADE)
     referral_code = models.CharField(primary_key=True, max_length=20)
-    used_referral_code = models.CharField(max_length=20, null=True)
+    used_referral_code = models.CharField(max_length=20, blank=True)
 
 class Products(models.Model):
     product_id = models.AutoField(primary_key=True)
@@ -75,22 +75,21 @@ class SalesRecords(models.Model):
     sales_type = models.CharField(max_length=1, choices=SALES_TYPE_CHOICES)
 
     # 實體店面使用以下欄位
-    salesperson = models.ForeignKey('Salespeople', on_delete=models.CASCADE, null=True)
-    store = models.ForeignKey('PhysicalStores', on_delete=models.CASCADE, null=True)
+    salesperson = models.ForeignKey('Salespeople', on_delete=models.CASCADE, blank=True)
+    store = models.ForeignKey('PhysicalStores', on_delete=models.CASCADE, blank=True)
     sales_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
 class SalesQuestionnaires(models.Model):
     sales_record = models.OneToOneField('SalesRecords', primary_key=True, on_delete=models.CASCADE)
-    sales_process_score = models.IntegerField(null=True)
-    warranty_process_score = models.IntegerField(null=True)
+    sales_process_score = models.IntegerField(blank=True)
+    warranty_process_score = models.IntegerField(blank=True)
 
 class ExperienceQuestionnaires(models.Model):
-    
     customer = models.ForeignKey('Customers', on_delete=models.CASCADE)
     usage_id = models.ForeignKey('MassageChairRecord', on_delete=models.CASCADE)
     fill_time = models.DateTimeField(auto_now_add=True)
     willingness_to_use_again = models.BooleanField(default=False)
-    massage_chair_mode_satisfaction = models.IntegerField(null=True)
+    massage_chair_mode_satisfaction = models.IntegerField(blank=True)
 
 class ExperienceReservations(models.Model):
     reservation_id = models.AutoField(primary_key=True)

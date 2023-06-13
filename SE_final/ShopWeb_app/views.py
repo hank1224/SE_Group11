@@ -9,11 +9,12 @@ from DB_app.models import *
 from ShopWeb_app.forms import *
 from ShopWeb_app.models import CustomerWebViews
 
-from django.core.mail import send_mail, EmailMessage
 from django.template.loader import render_to_string
 from SE_final import settings
 from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
+
+import random
 
 # 登入狀態確認，並且區隔客戶與員工
 def customer_login_required(view_func):
@@ -82,6 +83,12 @@ def register(request):
             Customers.objects.create(username=user, customer_name=customer_name, customer_gender=customer_gender,
                                      phone_number=phone_number)
             login(request, user)
+
+            # 重複機率1/899999，懶得處理
+            random_referral_code = random.randint(100000, 999999) 
+            # 重複機率1/899999，懶得處理
+
+            ReferralCodes.objects.create(customer=user.customers, referral_code=random_referral_code)
             messages.success(request, f"Welcome, {user.username}!您已註冊成功!")
             return redirect('ShopWeb/index')
     else:
@@ -94,24 +101,30 @@ def edit_profile(request):
         form = CustomerEditProfileForm(request.POST, instance=request.user.customers)
         if form.is_valid():
             form.save()
-            messages.success(request, f"您的個人資料已更新!")
+            messages.success(request, f"{request.user}的個人資料已更新!")
             return redirect('ShopWeb/index')
     else:
         form = CustomerEditProfileForm(instance=request.user.customers)
-    return render(request, 'ShopWeb/edit_profile.html', {'form': form})
+        email = request.user.email
+        uesd_referral_code = ReferralCodes.objects.get(customer=request.user.customers).used_referral_code
+    return render(request, 'ShopWeb/edit_profile.html', {'form': form, 'email': email, 'uesd_referral_code': uesd_referral_code})
 
-# 寄信
-def send_ad_email(customer):
-    customer = Customers.objects.get(customer_id=customer.customer_id)
+# 寄廣告信
+def send_ad_email(request, customer_id):
+    customer = Customers.objects.get(customer_id=customer_id)
+    if not customer.username.email:
+        return HttpResponse('此客戶無email資料')
+    try:
+        email_subject = '按摩椅推銷'
+        email_template = 'Email/ad.html'
+        from_email = settings.EMAIL_HOST_USER
+        to_email = [customer.username.email]
 
-    email_subject = '按摩椅推銷'
-    email_template = 'Email/ad.html'
-    from_email = settings.EMAIL_HOST_USER
-    to_email = ['hank20011224@gmail.com']
+        html_content = render_to_string(email_template, {'customer': customer.customer_name})
+        text_content = strip_tags(html_content)
 
-    html_content = render_to_string(email_template, {'customer': customer.customer_name})
-    text_content = strip_tags(html_content)
-
-    email = EmailMultiAlternatives(email_subject, text_content, from_email, to_email)
-    email.attach_alternative(html_content, "text/html")
-    email.send()
+        email = EmailMultiAlternatives(email_subject, text_content, from_email, to_email)
+        email.attach_alternative(html_content, "text/html")
+        email.send()
+    except:
+        print("send_ad_email error, send failed.")

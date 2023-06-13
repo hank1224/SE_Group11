@@ -5,13 +5,19 @@
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card">
-        <div class="card-header">{{ user.username }}的個人資料</div>
+        <div class="card-header">用戶 {{ user.username }} 的個人資料</div>
         <div class="card-body">
           <form method="POST">
             {% csrf_token %}
             {{ form.as_p }}
             <div class="form-group row mb-0">
               <div class="col-md-6 offset-md-4">
+                <p>Email: {{ email }}</p>
+                {% if uesd_referral_code %}
+                <p>已輸入推薦碼: {{ uesd_referral_code }}</p>
+                {% else %}
+                <p>尚未輸入推薦碼</p>
+                {% endif %}
                 <button type="submit" class="btn btn-primary">
                   更新個人資料
                 </button>

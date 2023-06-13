@@ -5,6 +5,7 @@ from DB_app.models import *
 
 class CustomerRegistrationForm(UserCreationForm):
     customer_name = forms.CharField(max_length=255, required=True)
+    email = forms.EmailField(required=True)
     GENDER_CHOICES = [
         ('1', '男'),
         ('2', '女'),
@@ -12,11 +13,23 @@ class CustomerRegistrationForm(UserCreationForm):
         ('4', '不願透漏'),
     ]
     customer_gender = forms.ChoiceField(choices=GENDER_CHOICES, required=True)
-    phone_number = forms.CharField(max_length=20, required=True)
+    phone_number = forms.CharField(max_length=20)
 
     class Meta:
         model = User
-        fields = ['username', 'password1', 'password2', 'customer_name', 'customer_gender', 'phone_number']
+        fields = ['username', 'password1', 'password2', 'customer_name', 'email', 'customer_gender', 'phone_number']
+
+class CustomerEditProfileForm(forms.ModelForm):
+    # email = forms.EmailField(required=True)
+    # 無法修改email，因為email是User的屬性，不是Customer的屬性，且下方model無法同時修改兩個model
+    class Meta:
+        model = Customers
+        fields = ['customer_name', 'customer_gender', 'phone_number']
+
+
+
+
+
 
 class MassageChairRecordForm(forms.ModelForm):
     class Meta:
@@ -88,8 +101,3 @@ class MassageChairModeForm(forms.ModelForm):
     class Meta:
         model = MassageChairModes
         fields = ['massage_chair_mode_name']
-
-class CustomerEditProfileForm(forms.ModelForm):
-    class Meta:
-        model = Customers
-        fields = ['customer_name', 'customer_name', 'customer_gender', 'phone_number']
