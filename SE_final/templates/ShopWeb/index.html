@@ -1,6 +1,16 @@
 {% extends 'ShopWeb/base.html' %} 
 
 {% block content %} 
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% endfor %}
+  {% endif %}
   <div class="container"> 
     <h1>Welcome to our massage chair store!</h1>
     <hr>
@@ -13,7 +23,7 @@
               <p class="card-text">{{ product.product_model }}</p> 
               <div class="d-flex justify-content-between align-items-center"> 
                 <div class="btn-group"> 
-                  <a href="{% url 'buy_product' product.product_id %}" class="btn btn-sm btn-outline-secondary">Buy</a> 
+                  <a href="{% url 'ShopWeb/buy_product' product.product_id %}" class="btn btn-sm btn-outline-secondary">Buy</a> 
                 </div> 
                 <small class="text-muted">${{ product.product_price }}</small> 
               </div> 
@@ -23,9 +33,13 @@
       {% endfor %} 
     </div> 
   </div> 
-  {%if messages == True %}
   <script>
-    alert(" Order placed successfully! ");
+    $(document).ready(function () {
+      $('.alert').alert();
+      // Close the alert after 2 seconds.
+      setTimeout(function () {
+        $('.alert').alert('close');
+      }, 2000);
+    });
   </script>
-  {%endif%}
 {% endblock %}

@@ -13,6 +13,11 @@ python manage.py migrate
 127.0.0.1:8000/DB/create_test_data/
 ```
 
+**清除資料庫:**
+```python
+python manage.py flush
+```
+
 **顧客用網站:**
 ```
 127.0.0.1:8000/ShopWeb/

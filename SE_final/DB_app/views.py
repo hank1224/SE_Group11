@@ -80,7 +80,7 @@ def create_test_data(request):
     
 
     # ReferralCodes 建立推薦序號：
-    referral1 = ReferralCodes.objects.create(customer=cust1, referral_code="ABC1234", uesd_referral_code="")
+    referral1 = ReferralCodes.objects.create(customer=cust1, referral_code="ABC1234", used_referral_code="")
     
 
     # ExperienceQuestionnaires 建立體驗問卷：
@@ -93,7 +93,7 @@ def create_test_data(request):
     sales_ques2 = SalesQuestionnaires.objects.create(sales_record=sales2, sales_process_score=6, warranty_process_score=7)
 
     # ExperienceReservations 建立體驗預約：
-    reverse1 = ExperienceReservations.objects.create(customer=cust1, store=store1, reservation_time=datetime.datetime.now(), salespeople=staff1)
-    reverse2 = ExperienceReservations.objects.create(customer=cust2, store=store2, reservation_time=datetime.datetime.now(), salespeople=staff3)
+    reverse1 = ExperienceReservations.objects.create(customer=cust1, store_id=store1, reservation_time=datetime.datetime.now(), Salespeople=staff1)
+    reverse2 = ExperienceReservations.objects.create(customer=cust2, store_id=store2, reservation_time=datetime.datetime.now(), Salespeople=staff3)
     
     return HttpResponse("測試資料建立完成！")
