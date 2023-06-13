@@ -1,0 +1,28 @@
+{% extends "ShopWeb/base.html" %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      
+      <h2>{{ product.product_name }}</h2>
+      <p>型號: {{ product.product_model }}</p>
+      <p>價格: NT$ {{ product.product_price }}</p>
+      
+      {% if product.product_warranty %}
+        <p>保固: 一年保固</p>
+      {% else %}
+        <p>保固: 無</p>
+      {% endif %}
+      
+      <div class="mt-4">
+        <a href="{% url 'ShopWeb/index' %}" class="btn btn-secondary">返回</a>
+        <a href="{% url 'ShopWeb/buy_product' product.product_id %}" class="btn btn-primary">購買</a>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+{% endblock %}

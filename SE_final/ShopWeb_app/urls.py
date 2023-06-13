@@ -8,6 +8,8 @@ urlpatterns = [
     path('login/', views.login_view, name='ShopWeb/login'), 
     path('logout/', auth_views.LogoutView.as_view(next_page='ShopWeb/index'), name='ShopWeb/logout'), 
     path('register/', views.register, name='ShopWeb/register'),
+    path('edit_profile/', views.edit_profile, name='ShopWeb/edit_profile'),
+    path('product_detail/<int:product_id>/', views.product_detail, name='ShopWeb/product_detail'),
     path('buy_product/<int:product_id>/', views.buy_product, name='ShopWeb/buy_product'),
     path('order/', views.order, name='ShopWeb/order'),
     path('warranty/', views.warranty, name='ShopWeb/warranty'),

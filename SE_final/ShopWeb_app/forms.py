@@ -88,3 +88,8 @@ class MassageChairModeForm(forms.ModelForm):
     class Meta:
         model = MassageChairModes
         fields = ['massage_chair_mode_name']
+
+class CustomerEditProfileForm(forms.ModelForm):
+    class Meta:
+        model = Customers
+        fields = ['customer_name', 'customer_name', 'customer_gender', 'phone_number']

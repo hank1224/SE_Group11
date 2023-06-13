@@ -23,7 +23,7 @@
               <p class="card-text">{{ product.product_model }}</p> 
               <div class="d-flex justify-content-between align-items-center"> 
                 <div class="btn-group"> 
-                  <a href="{% url 'ShopWeb/buy_product' product.product_id %}" class="btn btn-sm btn-outline-secondary">Buy</a> 
+                  <a href="{% url 'ShopWeb/product_detail' product.product_id %}" class="btn btn-sm btn-outline-secondary">Check</a> 
                 </div> 
                 <small class="text-muted">${{ product.product_price }}</small> 
               </div> 

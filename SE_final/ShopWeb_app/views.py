@@ -7,8 +7,7 @@ from django.http import HttpResponse
 
 from DB_app.models import *
 from ShopWeb_app.forms import *
-
-from django.contrib.auth.decorators import user_passes_test
+from ShopWeb_app.models import CustomerWebViews
 
 # 登入狀態確認，並且區隔客戶與員工
 def customer_login_required(view_func):
@@ -25,11 +24,21 @@ def index(request):
     products = Products.objects.all() 
     return render(request, 'ShopWeb/index.html', {'products': products})
 
+def product_detail(request, product_id):
+    product = Products.objects.get(product_id=product_id)
+    try:
+        if request.user.is_authenticated and not request.user.is_staff:
+            CustomerWebViews.objects.create(customer=request.user.customers, product_id=product)
+    except:
+        print("CustomerWebViews error, record failed.")
+    return render(request, 'ShopWeb/product_detail.html', {'product': product})
+
 @customer_login_required
 def buy_product(request, product_id):
     buying = Products.objects.get(product_id=product_id)
     price = buying.product_price
     SalesRecords.objects.create(customer=request.user.customers, product=buying, sales_type='1', sales_price=price)
+    messages.success(request, f"{request.user.username} 已成功購買 " + buying.product_name + " !")
     return redirect('ShopWeb/index')
 
 @customer_login_required
@@ -49,6 +58,8 @@ def login_view(request):
             user = form.get_user() 
             login(request, user) 
             messages.success(request, f"Welcome back, {user.username}!")
+            if request.user.is_staff:
+                return redirect('/SalesApp/index')
             return redirect('ShopWeb/index') 
     else:
         form = AuthenticationForm()
@@ -70,3 +81,15 @@ def register(request):
     else:
         form = CustomerRegistrationForm()
     return render(request, 'ShopWeb/register.html', {'form': form})
+
+@customer_login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        form = CustomerEditProfileForm(request.POST, instance=request.user.customers)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"您的個人資料已更新!")
+            return redirect('ShopWeb/index')
+    else:
+        form = CustomerEditProfileForm(instance=request.user.customers)
+    return render(request, 'ShopWeb/edit_profile.html', {'form': form})
