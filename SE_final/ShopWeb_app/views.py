@@ -8,21 +8,16 @@ from django.http import HttpResponse
 from DB_app.models import *
 from ShopWeb_app.forms import *
 
-import datetime
-
-
 from django.contrib.auth.decorators import user_passes_test
 
 def customer_login_required(function=None):
     actual_decorator = user_passes_test(
-        lambda u: u.is_active and u.is_superuser,
-        login_url='/shop/login'
+        lambda u: u.is_active,
+        login_url='/ShopWeb/login'
     )
     if function:
         return actual_decorator(function)
     return actual_decorator
-
-
 
 def index(request): 
     products = Products.objects.all() 
@@ -33,7 +28,7 @@ def buy_product(request, product_id):
     buying = Products.objects.get(product_id=product_id)
     price = buying.product_price
     SalesRecords.objects.create(customer=request.user.customers, product=buying, sales_type='1', sales_price=price)
-    return redirect('index')
+    return redirect('ShopWeb/index')
 
 @customer_login_required
 def order(request):
@@ -52,7 +47,7 @@ def login_view(request):
             user = form.get_user() 
             login(request, user) 
             messages.success(request, f"Welcome back, {user.username}!") 
-            return redirect('index') 
+            return redirect('ShopWeb/index') 
     else:
         form = AuthenticationForm()
     return render(request, 'ShopWeb/login.html', {'form': form}) 
@@ -69,8 +64,7 @@ def register(request):
                                      phone_number=phone_number)
             login(request, user)
             messages.success(request, f"Welcome, {user.username}!")
-            return redirect('index')
+            return redirect('ShopWeb/index')
     else:
         form = CustomerRegistrationForm()
     return render(request, 'ShopWeb/register.html', {'form': form})
-

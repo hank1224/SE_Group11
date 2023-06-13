@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from DB_app.models import *
+
 class CustomerRegistrationForm(UserCreationForm):
     customer_name = forms.CharField(max_length=255, required=True)
     GENDER_CHOICES = [
