@@ -26,9 +26,26 @@ class CustomerEditProfileForm(forms.ModelForm):
         model = Customers
         fields = ['customer_name', 'customer_gender', 'phone_number']
 
+class ReferralCodeForm(forms.ModelForm):
+    class Meta:
+        model = ReferralCodes
+        fields = ['referral_code', 'used_referral_code']
+        labels = {
+                    'referral_code': '您的推薦碼',
+                    'used_referral_code': '請輸入欲使用推薦碼',
+                }
+    referral_code = forms.CharField(disabled=True, widget=forms.TextInput(attrs={'readonly': 'readonly'}))
 
-
-
+class ReferralCodeForm_unfillable(forms.ModelForm):
+    class Meta:
+        model = ReferralCodes
+        fields = ['referral_code', 'used_referral_code']
+        labels = {
+                            'referral_code': '您的推薦碼',
+                            'used_referral_code': '請輸入欲使用推薦碼',
+                        }
+    referral_code = forms.CharField(disabled=True, widget=forms.TextInput(attrs={'readonly': 'readonly'}))   
+    used_referral_code = forms.CharField(disabled=True, widget=forms.TextInput(attrs={'readonly': 'readonly'}))   
 
 
 class MassageChairRecordForm(forms.ModelForm):
@@ -86,11 +103,6 @@ class SalespersonForm(forms.ModelForm):
     class Meta:
         model = Salespeople
         fields = ['salesperson_name', 'store_id']
-
-class ReferralCodeForm(forms.ModelForm):
-    class Meta:
-        model = ReferralCodes
-        fields = ['customer', 'referral_code', 'used_referral_code']
 
 class MassageChairForm(forms.ModelForm):
     class Meta:

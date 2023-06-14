@@ -13,4 +13,5 @@ urlpatterns = [
     path('buy_product/<int:product_id>/', views.buy_product, name='ShopWeb/buy_product'),
     path('order/', views.order, name='ShopWeb/order'),
     path('warranty/', views.warranty, name='ShopWeb/warranty'),
+    path('referral_code', views.referral_code, name='ShopWeb/referral_code'),
 ]

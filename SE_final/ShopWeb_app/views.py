@@ -1,5 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404 
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.contrib import messages 
 from django.contrib.auth import authenticate, login 
 from django.contrib.auth.forms import AuthenticationForm 
@@ -127,4 +126,28 @@ def send_ad_email(request, customer_id):
         email.attach_alternative(html_content, "text/html")
         email.send()
     except:
-        print("send_ad_email error, send failed.")
+        print("send_ad_email error.")
+
+@customer_login_required
+def referral_code(request):
+    referral_code_instance = ReferralCodes.objects.get(customer=request.user.customers)
+    if request.method == 'POST':
+        form = ReferralCodeForm(request.POST, instance=referral_code_instance)
+        if form.is_valid():
+            check_referral_code = form.cleaned_data['used_referral_code']
+            if ReferralCodes.objects.filter(referral_code=check_referral_code).exists():
+                if check_referral_code == referral_code_instance.referral_code:
+                    messages.error(request, f"無法填寫自己作爲推薦人")
+                    return redirect('ShopWeb/index')
+                form.save()
+                messages.success(request, f"{request.user}成功填寫推薦碼!")
+                return redirect('ShopWeb/index')
+            else:
+                messages.error(request, '此推薦碼不存在')
+                return redirect('ShopWeb/index')
+    else:
+        if referral_code_instance.used_referral_code:
+            form = ReferralCodeForm_unfillable(instance=referral_code_instance)
+        else:
+            form = ReferralCodeForm(instance=referral_code_instance)
+        return render(request, 'ShopWeb/referral_code.html', {'form': form, 'referral_code_instance': referral_code_instance})

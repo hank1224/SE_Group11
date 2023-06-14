@@ -1,0 +1,33 @@
+{% extends 'ShopWeb/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">推薦碼</div>
+        <div class="card-body">
+          <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="form-group row mb-0">
+              <div class="col-md-6 offset-md-4">
+                {% if referral_code_instance.used_referral_code == None %}
+                <button type="submit" class="btn btn-primary">
+                  送出
+                </button>
+                {% endif %}
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}
