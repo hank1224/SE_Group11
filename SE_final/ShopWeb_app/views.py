@@ -84,7 +84,7 @@ def register(request):
                 random_salesperson = random.choice(all_salespeople)
             except:
                 random_salesperson = Salespeople.objects.get(salesperson_id=1)
-                print("register random salesperson error, uesd default.")
+                print("register random salesperson error, used default.")
             Customers.objects.create(username=user, customer_name=customer_name, customer_gender=customer_gender, phone_number=phone_number, salesperson=random_salesperson)
             login(request, user)
 
@@ -110,8 +110,9 @@ def edit_profile(request):
     else:
         form = CustomerEditProfileForm(instance=request.user.customers)
         email = request.user.email
-        uesd_referral_code = ReferralCodes.objects.get(customer=request.user.customers).used_referral_code
-    return render(request, 'ShopWeb/edit_profile.html', {'form': form, 'email': email, 'uesd_referral_code': uesd_referral_code})
+        used_referral_code = ReferralCodes.objects.get(customer=request.user.customers).used_referral_code
+        salesperson = request.user.customers.salesperson
+    return render(request, 'ShopWeb/edit_profile.html', {'form': form, 'email': email, 'used_referral_code': used_referral_code, 'salesperson': salesperson})
 
 # 寄廣告信
 def send_ad_email(request, customer_id):

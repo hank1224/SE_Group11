@@ -12,7 +12,9 @@
             {{ form.as_p }}
             <div class="form-group row mb-0">
               <div class="col-md-6 offset-md-4">
-                {% if referral_code_instance.used_referral_code == None %}
+                {% if referral_code_instance.used_referral_code %}
+                
+                {% else %}
                 <button type="submit" class="btn btn-primary">
                   送出
                 </button>

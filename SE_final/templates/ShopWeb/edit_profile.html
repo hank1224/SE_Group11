@@ -13,8 +13,9 @@
             <div class="form-group row mb-0">
               <div class="col-md-6 offset-md-4">
                 <p>Email: {{ email }}</p>
-                {% if uesd_referral_code %}
-                <p>已輸入推薦碼: {{ uesd_referral_code }}</p>
+                <p>您的業務員: {{ salesperson.salesperson_name }}</p>
+                {% if used_referral_code %}
+                <p>已輸入推薦碼: {{ used_referral_code }}</p>
                 {% else %}
                 <p>尚未輸入推薦碼</p>
                 {% endif %}
