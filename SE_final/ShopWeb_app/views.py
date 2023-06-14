@@ -79,8 +79,13 @@ def register(request):
             customer_name = form.cleaned_data['customer_name']
             customer_gender = form.cleaned_data['customer_gender']
             phone_number = form.cleaned_data['phone_number']
-            Customers.objects.create(username=user, customer_name=customer_name, customer_gender=customer_gender,
-                                     phone_number=phone_number)
+            try:
+                all_salespeople = Salespeople.objects.all()
+                random_salesperson = random.choice(all_salespeople)
+            except:
+                random_salesperson = Salespeople.objects.get(salesperson_id=1)
+                print("register random salesperson error, uesd default.")
+            Customers.objects.create(username=user, customer_name=customer_name, customer_gender=customer_gender, phone_number=phone_number, salesperson=random_salesperson)
             login(request, user)
 
             # 重複機率1/899999，懶得處理
