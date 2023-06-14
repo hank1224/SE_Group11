@@ -5,4 +5,6 @@ from . import views
 urlpatterns = [ 
     path('', views.index),
     path('index/', views.index, name='SalesApp/index'),
+    path('login/', views.login_view, name='SalesApp/login'), 
+    path('logout/', auth_views.LogoutView.as_view(next_page='SalesApp/index'), name='SalesApp/logout'), 
 ]

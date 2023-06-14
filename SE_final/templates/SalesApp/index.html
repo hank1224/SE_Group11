@@ -1,1 +1,50 @@
-<h1>SalesApp</h1>
+{% extends 'SalesApp/base.html' %}
+{% load static %}
+
+{% block title %}
+    Employee WebApp
+{% endblock %}
+
+{% block active %}
+    active
+{% endblock %}
+
+{% block content %}
+    <h1 class="my-4">Welcome, {{ user.username }}</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <h2 class="my-4">Your Customers</h2>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Phone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for customer in customers %}
+                        <tr>
+                            <td>{{ customer.name }}</td>
+                            <td>{{ customer.email }}</td>
+                            <td>{{ customer.phone }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="3">No customers found.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h2 class="my-4">Your Sales Performance</h2>
+            <ul class="list-group">
+                <li class="list-group-item">Total Sales: ${{ total_sales }}</li>
+                <li class="list-group-item">Average Sales: ${{ avg_sales }}</li>
+                <li class="list-group-item">Highest Sale: ${{ highest_sale }}</li>
+                <li class="list-group-item">Lowest Sale: ${{ lowest_sale }}</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
