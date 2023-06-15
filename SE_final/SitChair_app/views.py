@@ -33,14 +33,18 @@ def login_view(request):
 def index(request):
     return render(request, 'SitChair/index.html')
 
+@customer_login_required
 def use_massage_chair(request):
     if request.method == 'POST':
         form = MassageChairRecordForm(data=request.POST)
         if form.is_valid():
+            print(form.cleaned_data)
             form.save()
+        print(form.errors)
         messages.success(request, f"{request.user}已開始按摩服務!")
         return redirect('SitChair/index')
     else:
-        form = MassageChairRecordForm()
+        initial = {'customer': request.user.customers.customer_name}
+        form = MassageChairRecordForm(initial=initial)
         return render(request, 'SitChair/use_massage_chair.html', {'form': form})
 

@@ -14,6 +14,7 @@
                     <form method="POST">
                         {% csrf_token %}
                         <div class="form-group">
+                            <input type="hidden" name="{{ form.customer.name }}" value="{{ form.customer.value }}"/>
                             <label for="{{ form.customer.id_for_label }}">顧客姓名</label>
                             {{ form.customer }}
                         </div>
