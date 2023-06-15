@@ -1,7 +1,18 @@
 {% extends 'ShopWeb/base.html' %}
 
 {% block content %}
-
+{% if messages %}
+    <div class="container mt-3">
+    {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+    </div>
+{% endif %}
 <div class="container my-5">
   <h2 class="text-center mb-5">訂單資訊</h2>
   
@@ -18,8 +29,9 @@
               <th scope="col">銷售時間</th>
               <th scope="col">銷售類型</th>
               <th scope="col">銷售人員</th>
-              <th scope="col">實體店面</th>
+              <th scope="col">店面</th>
               <th scope="col">銷售價格</th>
+              <th scope="col">銷售問券</th>
             </tr>
           </thead>
           <tbody>
@@ -29,17 +41,18 @@
               <td>{{ record.product.product_name }}</td>
               <td>{{ record.sales_time|date:"Y年n月j日 H:i" }}</td>
               <td>{{ record.get_sales_type_display }}</td>
-              {% if record.salesperson %}
               <td>{{ record.salesperson.salesperson_name }}</td>
-              {% else %}
-              <td>NULL</td>
-              {% endif %}
               {% if record.store %}
               <td>{{ record.store.branch_name }}</td>
               {% else %}
-              <td>NULL</td>
+              <td>網路</td>
               {% endif %}
               <td>{{ record.sales_price }}</td>
+              {% if record.salesquestionnaires.sales_process_score %}
+              <td>已填寫</td>
+              {% else %}
+              <td><a href="{% url 'ShopWeb/sales_process_EQ' sales_record_id=record.sales_record_id %}" class="btn btn-primary">過程問券</a></td>
+              {% endif %}
             </tr>
             {% endfor %}
           </tbody>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>售後服務問券邀請</title>
+	<style type="text/css">
+		body {
+			font-family: Helvetica, Arial, sans-serif;
+			background-color: #f2f2f2;
+		}
+
+		.container {
+			width: 80%;
+			margin: auto;
+			background-color: #fff;
+			padding: 20px;
+			box-shadow: 0 0 10px rgba(0,0,0,0.2);
+			border-radius: 5px;
+		}
+		
+		h1 {
+			font-size: 24px;
+			color: #333;
+			text-align: center;
+			margin-top: 0;
+		}
+
+		p {
+			font-size: 16px;
+			color: #666;
+			line-height: 1.5;
+		}
+
+		button {
+			background-color: #009adf;
+			color: #fff;
+			padding: 10px 20px;
+			border-radius: 5px;
+			border: none;
+			font-size: 16px;
+			cursor: pointer;
+			margin-top: 20px;
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		a {
+			color: #009adf;
+			text-decoration: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>邀請填寫售後服務問券</h1>
+		<p>親愛的顧客</p>
+		<p>感謝您購買我們的產品！為了提供更好的售後服務，我們誠邀您填寫一份問券，讓我們了解您的使用體驗以及意見建議。</p>
+		<p>問券填寫完成後，您將有機會獲得我們提供的禮品。</p>
+		<button><a href="{% url 'ShopWeb/WarrantyProcessEQ' %}" target="_blank">填寫問券</a></button>
+		<p>如果您有任何疑問或建議，請聯繫我們的客戶服務部門。</p>
+		<p>謝謝您的支持！</p>
+	</div>
+</body>
+</html>

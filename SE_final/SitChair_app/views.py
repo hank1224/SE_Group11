@@ -23,7 +23,7 @@ def customer_login_required(view_func):
 def login_view(request): 
     if request.method == 'POST': 
         form = AuthenticationForm(data=request.POST) 
-        if form.is_valid(): 
+        if form.is_valid():
             user = form.get_user() 
             login(request, user) 
             messages.success(request, f"Welcome back, {user.username}!")
@@ -44,8 +44,8 @@ def use_massage_chair(request):
         if form.is_valid():
             form.instance.customer = request.user.customers
             form.save()
-        messages.success(request, f"{request.user}已開始按摩服務!")
-        return redirect('SitChair/use_massage_chair')
+            messages.success(request, f"{request.user}已開始按摩服務!")
+            return redirect('SitChair/use_massage_chair')
     else:
         form = MassageChairRecordForm()
         return render(request, 'SitChair/use_massage_chair.html', {'form': form})
@@ -64,8 +64,8 @@ def experience_questionnaire(request, usage_id):
             form.instance.customer = request.user.customers
             form.save()
             MassageChairRecord.objects.filter(usage_id=usage_id).update(experience_questionnaires_fill=True)
-        messages.success(request, f"紀錄編號{ usage_id }，體驗問券填寫成功!")
-        return redirect('SitChair/list_massage_chair_record')
+            messages.success(request, f"紀錄編號{ usage_id }，體驗問券填寫成功!")
+            return redirect('SitChair/list_massage_chair_record')
     else:
         form = ExperienceQuestionnaireForm()
         return render(request, 'SitChair/experience_questionnaire.html', {'form': form, 'usage_id': usage_id})
@@ -84,8 +84,8 @@ def experience_reservation(request):
                 form.instance.salespeople = Salespeople.objects.get(salespeople_id=1)
                 print("None salespeople chose, default salespeople_id=1")
             form.save()
-        messages.success(request, f"體驗預約成功!")
-        return redirect('SitChair/experience_reservation')
+            messages.success(request, f"體驗預約成功!")
+            return redirect('SitChair/experience_reservation')
     else:
         form = ExperienceReservationForm()
         stores = PhysicalStores.objects.all()

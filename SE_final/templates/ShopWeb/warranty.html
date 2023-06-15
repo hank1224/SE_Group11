@@ -18,7 +18,7 @@
               <th scope="col">銷售時間</th>
               <th scope="col">保固</th>
               <th scope="col">保固截止</th>
-              <th scope="col">預約服務</th>
+              <th scope="col">保固服務</th>
             </tr>
           </thead>
           <tbody>
@@ -33,11 +33,19 @@
               {% else %}
               <td>NULL</td>
               {% endif %}
-              {% if record.salesperson %}
-              <td><a href="#">{{ record.salesperson.salesperson_name }}</a></td>
+              
+              {% if record.product.product_warranty == True %}
+
+                {% if record.product|warranty_check:record.sales_time == True %}
+                  <td><a href="#">{{ record.salesperson.salesperson_name }}</a></td>
+                {% else %}
+                  <td>保固已過期</td>
+                {% endif %}
+
               {% else %}
-              <td>NULL</td>
+                <td>無保固</td>
               {% endif %}
+
             </tr>
             {% endfor %}
           </tbody>

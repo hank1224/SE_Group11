@@ -47,16 +47,18 @@ class ReferralCodeForm_unfillable(forms.ModelForm):
     referral_code = forms.CharField(disabled=True, widget=forms.TextInput(attrs={'readonly': 'readonly'}))   
     used_referral_code = forms.CharField(disabled=True, widget=forms.TextInput(attrs={'readonly': 'readonly'}))   
 
-
-
-    
-
-
-
-class SalesQuestionnaireForm(forms.ModelForm):
+class SalesProcessEQForm(forms.ModelForm):
     class Meta:
         model = SalesQuestionnaires
-        fields = ['sales_process_score', 'warranty_process_score']
+        fields = ['sales_process_score']
+        labels = {'sales_process_score': '請給予本次購買過程的滿意度分數'}
+        
+    
+class WarrantyProcessEQForm(forms.ModelForm):
+    class Meta:
+        model = SalesQuestionnaires
+        fields = ['warranty_process_score']
+        labels = {'warranty_process_score': '請給予後續服務和保固的滿意度分數'}
 
 
 

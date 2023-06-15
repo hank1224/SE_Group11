@@ -82,8 +82,8 @@ class SalesRecords(models.Model):
 
 class SalesQuestionnaires(models.Model):
     sales_record = models.OneToOneField('SalesRecords', primary_key=True, on_delete=models.CASCADE)
-    sales_process_score = models.IntegerField(blank=True)
-    warranty_process_score = models.IntegerField(blank=True)
+    sales_process_score = models.IntegerField(null=True)
+    warranty_process_score = models.IntegerField(null=True)
 
 class ExperienceQuestionnaires(models.Model):
     customer = models.ForeignKey('Customers', on_delete=models.CASCADE)

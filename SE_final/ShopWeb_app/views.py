@@ -7,11 +7,6 @@ from django.http import HttpResponse
 from DB_app.models import *
 from ShopWeb_app.forms import *
 
-from django.template.loader import render_to_string
-from SE_final import settings
-from django.core.mail import EmailMultiAlternatives
-from django.utils.html import strip_tags
-
 import random
 
 # 登入狀態確認，並且區隔客戶與員工
@@ -43,7 +38,7 @@ def buy_product(request, product_id):
     buying = Products.objects.get(product_id=product_id)
     price = buying.product_price
     print(request.user.customers.salesperson)
-    SalesRecords.objects.create(customer=request.user.customers, product=buying, sales_type='1', sales_price=price)
+    SalesRecords.objects.create(customer=request.user.customers, product=buying, sales_type='1', sales_price=price, salesperson=request.user.customers.salesperson)
     messages.success(request, f"{request.user.username} 已成功購買 " + buying.product_name + " !")
     return redirect('ShopWeb/index')
 
@@ -114,26 +109,6 @@ def edit_profile(request):
         salesperson = request.user.customers.salesperson
     return render(request, 'ShopWeb/edit_profile.html', {'form': form, 'email': email, 'used_referral_code': used_referral_code, 'salesperson': salesperson})
 
-# 寄廣告信
-def send_ad_email(request, customer_id):
-    customer = Customers.objects.get(customer_id=customer_id)
-    if not customer.username.email:
-        return HttpResponse('此客戶無email資料')
-    try:
-        email_subject = '按摩椅推銷'
-        email_template = 'Email/ad.html'
-        from_email = settings.EMAIL_HOST_USER
-        to_email = [customer.username.email]
-
-        html_content = render_to_string(email_template, {'customer': customer.customer_name})
-        text_content = strip_tags(html_content)
-
-        email = EmailMultiAlternatives(email_subject, text_content, from_email, to_email)
-        email.attach_alternative(html_content, "text/html")
-        email.send()
-    except:
-        print("send_ad_email error.")
-
 @customer_login_required
 def referral_code(request):
     referral_code_instance = ReferralCodes.objects.get(customer=request.user.customers)
@@ -157,3 +132,34 @@ def referral_code(request):
         else:
             form = ReferralCodeForm(instance=referral_code_instance)
         return render(request, 'ShopWeb/referral_code.html', {'form': form, 'referral_code_instance': referral_code_instance})
+
+#有夠蠢，乾脆用傳統form
+@customer_login_required
+def sales_process_EQ(request, sales_record_id):
+    sales_record = SalesRecords.objects.get(sales_record_id=sales_record_id)
+    if request.method == 'POST':
+        form = SalesProcessEQForm(request.POST)
+        print(form.data)
+        if form.is_valid():
+            SalesQuestionnaires.objects.get_or_create(sales_record=sales_record, **form.cleaned_data)
+            SalesQuestionnaires.objects.filter(sales_record=sales_record).update(sales_process_score=form.data['sales_process_score'])
+            messages.success(request, f"{request.user}已成功填寫EQ!")
+            return redirect('ShopWeb/index')
+    else:
+        form = SalesProcessEQForm(instance=sales_record)
+        return render(request, 'ShopWeb/sales_process_EQ.html', {'form': form, 'sales_record': sales_record})
+    
+def warranty_process_EQ(request, sales_record_id):
+    sales_record = SalesRecords.objects.get(sales_record_id=sales_record_id)
+    if request.method == 'POST':
+        form = WarrantyProcessEQForm(request.POST, instance=sales_record)
+        print(form.data)
+        if form.is_valid():
+            SalesQuestionnaires.objects.get_or_create(sales_record=sales_record, **form.cleaned_data)
+            SalesQuestionnaires.objects.filter(sales_record=sales_record).update(warranty_process_score=form.data['warranty_process_score'])
+            messages.success(request, f"{request.user}已成功填寫EQ!")
+            return redirect('ShopWeb/index')
+        print(form.errors)
+    else:
+        form = WarrantyProcessEQForm(instance=sales_record)
+        return render(request, 'ShopWeb/warranty_process.html', {'form': form, 'sales_record': sales_record})
