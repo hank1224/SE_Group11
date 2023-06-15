@@ -5,6 +5,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 
 from .forms import *
+from DB_app.models import PhysicalStores, ExperienceReservations
+
+import random
 
 # 登入狀態確認，並且區隔客戶與員工
 def customer_login_required(view_func):
@@ -61,9 +64,27 @@ def experience_questionnaire(request, usage_id):
             form.instance.customer = request.user.customers
             form.save()
             MassageChairRecord.objects.filter(usage_id=usage_id).update(experience_questionnaires_fill=True)
-        messages.success(request, f"紀錄編號{ usage_id }體驗問券填寫成功!")
+        messages.success(request, f"紀錄編號{ usage_id }，體驗問券填寫成功!")
         return redirect('SitChair/list_massage_chair_record')
     else:
         form = ExperienceQuestionnaireForm()
         return render(request, 'SitChair/experience_questionnaire.html', {'form': form, 'usage_id': usage_id})
+    
+@customer_login_required
+def experience_reservation(request):
+    if request.method == 'POST':
+        form = ExperienceReservationForm(data=request.POST)
+        if form.is_valid():
+            form.instance.customer = request.user.customers
+            form_store = form.cleaned_data['store_id']
+            chose_salespeople = random.choice(Salespeople.objects.filter(store_id=form_store))
+            form.instance.salespeople = chose_salespeople
+            form.save()
+        messages.success(request, f"體驗預約成功!")
+        return redirect('SitChair/experience_reservation')
+    else:
+        form = ExperienceReservationForm()
+        stores = PhysicalStores.objects.all()
+        reservations = ExperienceReservations.objects.filter(customer=request.user.customers).order_by('-reservation_time')
+        return render(request, 'SitChair/experience_reservation.html', {'form': form, 'stores': stores, 'reservations': reservations})
 

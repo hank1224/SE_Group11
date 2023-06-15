@@ -15,3 +15,8 @@ class ExperienceQuestionnaireForm(forms.ModelForm):
     class Meta:
         model = ExperienceQuestionnaires
         fields = ['willingness_to_use_again', 'massage_chair_mode_satisfaction']
+
+class ExperienceReservationForm(forms.ModelForm):
+    class Meta:
+        model = ExperienceReservations
+        fields = ['reservation_time', 'store_id']

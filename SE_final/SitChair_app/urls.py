@@ -12,5 +12,6 @@ urlpatterns = [
     path('use_massage_chair/', views.use_massage_chair, name='SitChair/use_massage_chair'),
     path('experience_questionnaire/<int:usage_id>/', views.experience_questionnaire, name='SitChair/experience_questionnaire'),
     path('list_massage_chair_record/', views.list_massage_chair_record, name='SitChair/list_massage_chair_record'),
+    path('experience_reservation/', views.experience_reservation, name='SitChair/experience_reservation')
 
 ]

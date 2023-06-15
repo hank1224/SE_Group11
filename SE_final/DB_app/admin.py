@@ -41,7 +41,7 @@ class ExperienceQuestionnairesAdmin(admin.ModelAdmin):
     list_display = ('customer', 'usage_id', 'fill_time', 'willingness_to_use_again', 'massage_chair_mode_satisfaction')
 
 class ExperienceReservationsAdmin(admin.ModelAdmin):
-    list_display = ('reservation_id', 'customer', 'store_id', 'reservation_time', 'Salespeople')
+    list_display = ('reservation_id', 'customer', 'store_id', 'reservation_time', 'salespeople')
 
 
 admin.site.register(Customers, CustomersAdmin)

@@ -77,7 +77,4 @@ class SalesQuestionnaireForm(forms.ModelForm):
         model = SalesQuestionnaires
         fields = ['sales_process_score', 'warranty_process_score']
 
-class ExperienceReservationForm(forms.ModelForm):
-    class Meta:
-        model = ExperienceReservations
-        fields = ['customer', 'reservation_time', 'store_id', 'Salespeople']
+

@@ -97,4 +97,4 @@ class ExperienceReservations(models.Model):
     customer = models.ForeignKey('Customers', on_delete=models.CASCADE)
     reservation_time = models.DateTimeField()
     store_id = models.ForeignKey('PhysicalStores', on_delete=models.CASCADE)
-    Salespeople = models.ForeignKey('Salespeople', on_delete=models.CASCADE)
+    salespeople = models.ForeignKey('Salespeople', on_delete=models.CASCADE, null=True)

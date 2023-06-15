@@ -59,7 +59,7 @@
 - 銷售日期
 - 產品型號 (FK to Products table)
 
-# 實體店面
+實體店面
     - 業務員編號 (FK to Salespeople table)
     - 店號 (FK to PhysicalStores table)
     - 業務員售出價格
@@ -80,12 +80,12 @@
 - 按摩椅紀錄編號 (FK to MassageChairRecord table)
 - 按摩椅模式滿意度
 
-+17. 預約體驗表(ExperienceReservations)
+17. 預約體驗表(ExperienceReservations)
 - 預約編號 (PK)
 - 顧客編號 (FK to Customers table)
 - 預約時間
 - 預約店號 (FK to PhysicalStores table)
-- 業務員編號 (FK to Salespeople table)
+! 業務員編號 (FK to Salespeople table) 改小寫
 
 限制:
 1. 一筆訂單僅能有一個產品
@@ -104,6 +104,26 @@
 
 6014起增修內容:
 
+
+class ExperienceReservations(models.Model):
+    reservation_id = models.AutoField(primary_key=True)
+    customer = models.ForeignKey('Customers', on_delete=models.CASCADE)
+    reservation_time = models.DateTimeField()
+    store_id = models.ForeignKey('PhysicalStores', on_delete=models.CASCADE)
+    !salespeople = models.ForeignKey('Salespeople', on_delete=models.CASCADE, null=True)
+
+class MassageChairRecord(models.Model):
+    usage_id = models.AutoField(primary_key=True)
+    customer = models.ForeignKey('Customers', on_delete=models.CASCADE)
+    massage_chair = models.ForeignKey('MassageChairs', on_delete=models.CASCADE)
+    massage_chair_mode = models.ForeignKey('MassageChairModes', on_delete=models.CASCADE)
+    start_time = models.DateTimeField(auto_now_add=True)
+    PAYMENT_TYPE_CHOICES = [
+        ('1', '現金'),
+        ('2', 'APP付款'),
+    ]
+    payment = models.CharField(max_length=1, choices=PAYMENT_TYPE_CHOICES)
+    !experience_questionnaires_fill = models.BooleanField(default=False)
 
 
 銷售總額與淨利:

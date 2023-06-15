@@ -27,7 +27,7 @@ def customer_login_required(view_func):
     return wrapper
 
 def index(request): 
-    products = Products.objects.all() 
+    products = Products.objects.all()
     return render(request, 'ShopWeb/index.html', {'products': products})
 
 def product_detail(request, product_id):

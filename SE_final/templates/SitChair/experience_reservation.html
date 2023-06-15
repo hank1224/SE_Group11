@@ -1,0 +1,91 @@
+{% extends 'SitChair/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">{{ title }}</div>
+        <div class="card-body">
+          <form method="POST" id="reservation-form">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="reservation_time">預約時間</label>
+              <input type="datetime-local" class="form-control" id="reservation_time" name="reservation_time" required>
+            </div>
+            <div class="form-group">
+              <label for="store_id">門市</label>
+              <select class="form-control" id="store_id" name="store_id" required>
+                <option value="">請選擇門市</option>
+                {% for store in stores %}
+                <option value="{{ store.pk }}">{{ store.branch_name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">預約</button>
+          </form>
+          <hr>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>預約門市</th>
+                  <th>預約時間</th>
+                  <th>接待員</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for reservation in reservations %}
+                  <tr>
+                    <th scope="row">{{ reservation.reservation_id }}</th>
+                    <td>{{ reservation.store_id.branch_name }}</td>
+                    <td>{{ reservation.reservation_time }}</td>
+                    <td>{{ reservation.salespeople.salesperson_name }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% block script %}
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script>
+  $(document).ready(function() {
+    // 設定預約時間只能在當前的兩周內
+    var now = new Date();
+    var maxDate = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
+    var minDate = now.toISOString().slice(0, 16);
+    var maxDate = maxDate.toISOString().slice(0, 16);
+    $('#reservation_time').attr('min', minDate);
+    $('#reservation_time').attr('max', maxDate);
+
+    $('#reservation-form').submit(function(event) {
+      event.preventDefault();
+      $.ajax({
+        type: 'POST',
+        url: '{% url "SitChair/experience_reservation" %}',
+        data: $(this).serialize(),
+        success: function(response) {
+          alert('體驗預約成功!');
+          window.location.href = '{% url "SitChair/experience_reservation" %}';
+        },
+        error: function(response) {
+          alert('體驗預約失敗!');
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}
+
+{% endblock %}
