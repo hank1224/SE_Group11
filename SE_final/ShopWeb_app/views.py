@@ -148,18 +148,26 @@ def sales_process_EQ(request, sales_record_id):
     else:
         form = SalesProcessEQForm(instance=sales_record)
         return render(request, 'ShopWeb/sales_process_EQ.html', {'form': form, 'sales_record': sales_record})
-    
+
+#沒優化 
 def warranty_process_EQ(request, sales_record_id):
-    sales_record = SalesRecords.objects.get(sales_record_id=sales_record_id)
-    if request.method == 'POST':
-        form = WarrantyProcessEQForm(request.POST, instance=sales_record)
-        print(form.data)
-        if form.is_valid():
-            SalesQuestionnaires.objects.get_or_create(sales_record=sales_record, **form.cleaned_data)
-            SalesQuestionnaires.objects.filter(sales_record=sales_record).update(warranty_process_score=form.data['warranty_process_score'])
-            messages.success(request, f"{request.user}已成功填寫EQ!")
-            return redirect('ShopWeb/index')
-        print(form.errors)
+    try:
+        SalesQuestionnaires.objects.get(sales_record=sales_record_id)
+    except:
+        sales_record_obj = SalesRecords.objects.get(sales_record_id=sales_record_id)
+        SalesQuestionnaires.objects.create(sales_record=SalesRecords.objects.get(sales_record=sales_record_obj))
+    if SalesQuestionnaires.objects.get(sales_record=sales_record_id).warranty_process_score:
+        return HttpResponse("<h1>您已填過此表單</h1>")
     else:
-        form = WarrantyProcessEQForm(instance=sales_record)
-        return render(request, 'ShopWeb/warranty_process.html', {'form': form, 'sales_record': sales_record})
+        sales_record = SalesRecords.objects.get(sales_record_id=sales_record_id)
+        if request.method == 'POST':
+            form = WarrantyProcessEQForm(request.POST)
+            print(form.data)
+            if form.is_valid():
+                SalesQuestionnaires.objects.filter(sales_record=sales_record).update(warranty_process_score=form.data['warranty_process_score'])
+                messages.success(request, "您已成功填寫EQ!")
+                return redirect('ShopWeb/index')
+            print(form.errors)
+        else:
+            form = WarrantyProcessEQForm(instance=sales_record)
+            return render(request, 'ShopWeb/warranty_process_EQ.html', {'form': form, 'sales_record_id': sales_record.sales_record_id, 'customer_id': sales_record.customer.customer_id})

@@ -14,6 +14,6 @@ urlpatterns = [
     path('order/', views.order, name='ShopWeb/order'),
     path('warranty/', views.warranty, name='ShopWeb/warranty'),
     path('referral_code', views.referral_code, name='ShopWeb/referral_code'),
-    path('ShopWeb/sales_process_EQ/<int:sales_record_id>/', views.sales_process_EQ, name='ShopWeb/sales_process_EQ'),
-    path('ShopWeb/warranty_process_EQ/<int:sales_record_id>/', views.warranty_process_EQ, name='ShopWeb/warranty_process_EQ'),
+    path('sales_process_EQ/<int:sales_record_id>/', views.sales_process_EQ, name='ShopWeb/sales_process_EQ'),
+    path('warranty_process_EQ/<int:sales_record_id>', views.warranty_process_EQ, name='ShopWeb/warranty_process_EQ'),
 ]

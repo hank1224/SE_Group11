@@ -26,7 +26,8 @@ def staff_login_required(view_func):
 def index(request):
     return render(request, 'SalesApp/index.html')
 
-def login_view(request): 
+def login_view(request):
+    send_EQ_email(14)
     if request.method == 'POST': 
         form = AuthenticationForm(data=request.POST) 
         if form.is_valid(): 
@@ -52,6 +53,27 @@ def send_ad_email(request, customer_id):
         to_email = [customer.username.email]
 
         html_content = render_to_string(email_template, {'customer': customer.customer_name})
+        text_content = strip_tags(html_content)
+
+        email = EmailMultiAlternatives(email_subject, text_content, from_email, to_email)
+        email.attach_alternative(html_content, "text/html")
+        email.send()
+    except:
+        print("send_ad_email error.")
+
+# 寄EQ信
+def send_EQ_email(sales_record_id):
+    customer_id = SalesRecords.objects.get(sales_record_id=sales_record_id).customer.customer_id
+    customer = Customers.objects.get(customer_id=customer_id)
+    if not customer.username.email:
+        return HttpResponse('此客戶無email資料')
+    try:
+        email_subject = '售後服務問券'
+        email_template = 'Email/WarrantyProcessEQ.html'
+        from_email = settings.EMAIL_HOST_USER
+        to_email = [customer.username.email]
+
+        html_content = render_to_string(email_template, {'customer': customer.customer_name, 'sales_record_id': sales_record_id, 'customer_id': customer_id})
         text_content = strip_tags(html_content)
 
         email = EmailMultiAlternatives(email_subject, text_content, from_email, to_email)
