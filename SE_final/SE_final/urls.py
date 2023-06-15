@@ -15,10 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from DB_app.views import gateway
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', gateway, name='gateway'),
     path('DB/', include('DB_app.urls')),
     path('ShopWeb/', include('ShopWeb_app.urls')),
     path('SalesApp/', include('SalesApp_app.urls')),
+    path('SitChair/', include('SitChair_app.urls')),
 ]

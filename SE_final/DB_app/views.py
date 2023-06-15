@@ -1,7 +1,19 @@
+from django.shortcuts import render
 from django.http import HttpResponse
 
 from .models import *
 import datetime
+
+def gateway(request):
+    login_state = "尚未登入"
+    if not request.user.is_staff and request.user.is_authenticated:
+        login_state = str(request.user.username) + "，客戶"
+    elif request.user.is_superuser:
+        login_state = str(request.user.username) + "，後台管理員"
+    elif request.user.is_staff and request.user.is_authenticated:
+        login_state = str(request.user.username) + "，員工"
+        
+    return render(request, 'gateway.html', {'login_state': login_state})
 
 def create_test_data(request):
 
