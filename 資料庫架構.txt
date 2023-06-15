@@ -42,10 +42,10 @@
 - 產品保固 [boolen]
 - 產品保固期限 [datetime.delta持續時間格式, default=None]
 
-9. 線上店面訪問記錄表（OnlineStoreVisits）
-- 訪問編號 (PK)
+!9. 線上店面訪問記錄表（OnlineStoreVisits）
 - 顧客編號 (FK to Customers table)
 - 商品編號(FK to Products table)
+- 訪問時間
 
 11. 公共按摩椅表（MassageChairs）
 - 公共按摩椅編號 (PK)
@@ -124,6 +124,11 @@ class MassageChairRecord(models.Model):
     ]
     payment = models.CharField(max_length=1, choices=PAYMENT_TYPE_CHOICES)
     !experience_questionnaires_fill = models.BooleanField(default=False)
+
++class CustomerWebViews(models.Model):
+    customer = models.ForeignKey(Customers, on_delete=models.CASCADE)
+    product_id = models.ForeignKey(Products, on_delete=models.CASCADE)
+    view_time = models.DateTimeField(auto_now_add=True)
 
 
 銷售總額與淨利:

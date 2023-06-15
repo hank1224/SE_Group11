@@ -1,5 +1,5 @@
 from django import forms
-from DB_app.models import *
+from DB_app.models import MassageChairModes, MassageChairRecord, ExperienceQuestionnaires, ExperienceReservations
 
 class MassageChairRecordForm(forms.ModelForm):
     massage_chair_mode = forms.ModelChoiceField(queryset=MassageChairModes.objects.all())

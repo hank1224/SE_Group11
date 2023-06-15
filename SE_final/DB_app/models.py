@@ -13,7 +13,7 @@ class Customers(models.Model):
     ]
     customer_gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
     phone_number = models.CharField(max_length=20)
-    salesperson = models.ForeignKey('Salespeople', on_delete=models.CASCADE, blank=True)
+    salesperson = models.ForeignKey('Salespeople', on_delete=models.CASCADE, null=True)
 
 class MassageChairRecord(models.Model):
     usage_id = models.AutoField(primary_key=True)
@@ -50,10 +50,10 @@ class Products(models.Model):
     product_cost = models.DecimalField(max_digits=10, decimal_places=2)
     product_warranty = models.BooleanField(default=False)
 
-class OnlineStoreVisits(models.Model):
-    visit_id = models.AutoField(primary_key=True)
-    customer = models.ForeignKey('Customers', on_delete=models.CASCADE)
-    product = models.ForeignKey('Products', on_delete=models.CASCADE)
+class CustomerWebViews(models.Model):
+    customer = models.ForeignKey(Customers, on_delete=models.CASCADE)
+    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    view_time = models.DateTimeField(auto_now_add=True)
 
 class MassageChairs(models.Model):
     massage_chair_id = models.AutoField(primary_key=True)
@@ -76,8 +76,8 @@ class SalesRecords(models.Model):
     sales_type = models.CharField(max_length=1, choices=SALES_TYPE_CHOICES)
 
     # 實體店面使用以下欄位
-    salesperson = models.ForeignKey('Salespeople', on_delete=models.CASCADE, blank=True)
-    store = models.ForeignKey('PhysicalStores', on_delete=models.CASCADE, blank=True)
+    salesperson = models.ForeignKey('Salespeople', on_delete=models.CASCADE, null=True)
+    store = models.ForeignKey('PhysicalStores', on_delete=models.CASCADE, null=True)
     sales_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
 class SalesQuestionnaires(models.Model):

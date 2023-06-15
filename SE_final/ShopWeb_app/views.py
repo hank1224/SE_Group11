@@ -6,7 +6,6 @@ from django.http import HttpResponse
 
 from DB_app.models import *
 from ShopWeb_app.forms import *
-from ShopWeb_app.models import CustomerWebViews
 
 from django.template.loader import render_to_string
 from SE_final import settings
@@ -43,6 +42,7 @@ def product_detail(request, product_id):
 def buy_product(request, product_id):
     buying = Products.objects.get(product_id=product_id)
     price = buying.product_price
+    print(request.user.customers.salesperson)
     SalesRecords.objects.create(customer=request.user.customers, product=buying, sales_type='1', sales_price=price)
     messages.success(request, f"{request.user.username} 已成功購買 " + buying.product_name + " !")
     return redirect('ShopWeb/index')

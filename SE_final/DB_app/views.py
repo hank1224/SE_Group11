@@ -81,9 +81,9 @@ def create_test_data(request):
     record2 = MassageChairRecord.objects.create(customer=cust2, massage_chair=chair2, massage_chair_mode=mode2, payment="2")
     
 
-    # OnlineStoreVisits 建立線上商店參觀紀錄：
-    visit1 = OnlineStoreVisits.objects.create(customer=cust1, product=prod1)
-    visit2 = OnlineStoreVisits.objects.create(customer=cust2, product=prod2)
+    # CustomerWebViews 建立線上商店參觀紀錄：
+    visit1 = CustomerWebViews.objects.create(customer=cust1, product=prod1)
+    visit2 = CustomerWebViews.objects.create(customer=cust2, product=prod2)
     
 
     # SalesRecords 建立銷售紀錄：

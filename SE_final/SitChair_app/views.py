@@ -5,7 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 
 from .forms import *
-from DB_app.models import PhysicalStores, ExperienceReservations
+from DB_app.models import PhysicalStores, ExperienceReservations, Salespeople
 
 import random
 
@@ -77,8 +77,12 @@ def experience_reservation(request):
         if form.is_valid():
             form.instance.customer = request.user.customers
             form_store = form.cleaned_data['store_id']
-            chose_salespeople = random.choice(Salespeople.objects.filter(store_id=form_store))
-            form.instance.salespeople = chose_salespeople
+            try:
+                chose_salespeople = random.choice(Salespeople.objects.filter(store_id=form_store))
+                form.instance.salespeople = chose_salespeople
+            except:
+                form.instance.salespeople = Salespeople.objects.get(salespeople_id=1)
+                print("None salespeople chose, default salespeople_id=1")
             form.save()
         messages.success(request, f"體驗預約成功!")
         return redirect('SitChair/experience_reservation')
