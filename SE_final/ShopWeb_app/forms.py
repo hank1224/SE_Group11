@@ -48,10 +48,8 @@ class ReferralCodeForm_unfillable(forms.ModelForm):
     used_referral_code = forms.CharField(disabled=True, widget=forms.TextInput(attrs={'readonly': 'readonly'}))   
 
 
-class MassageChairRecordForm(forms.ModelForm):
-    class Meta:
-        model = MassageChairRecord
-        fields = ['customer', 'massage_chair', 'massage_chair_mode', 'payment']
+
+    
 
 class PhysicalSalesRecordForm(forms.ModelForm):
     class Meta:

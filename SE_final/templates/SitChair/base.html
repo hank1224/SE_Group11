@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'SitChair/index' %}">顧客APP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'SitChair/use_massage_chair' %}">使用按摩椅</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">填寫問券</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">預約門市體驗</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'ShopWeb/index' %}">前往網站</a>
+                </li>
+            </ul>
+        </div>
+        <ul class="nav justify-content-end">
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <span class="navbar-text px-3">
+                        歡迎回來，{{ user.username }}！
+                    </span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'SitChair/logout' %}">登出</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'SitChair/login' %}">登入</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'SitChair/register' %}">前往註冊</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>
