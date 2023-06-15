@@ -33,7 +33,7 @@ def product_detail(request, product_id):
     product = Products.objects.get(product_id=product_id)
     try:
         if request.user.is_authenticated and not request.user.is_staff:
-            CustomerWebViews.objects.create(customer=request.user.customers, product_id=product)
+            CustomerWebViews.objects.create(customer=request.user.customers, product=product)
     except:
         print("CustomerWebViews error, record failed.")
     return render(request, 'ShopWeb/product_detail.html', {'product': product})

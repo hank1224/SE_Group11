@@ -30,4 +30,4 @@ def login_view(request):
             return redirect('ShopWeb/index') 
     else:
         form = AuthenticationForm()
-    return render(request, 'ShopWeb/login.html', {'form': form}) 
+    return render(request, 'SalesApp/login.html', {'form': form}) 
