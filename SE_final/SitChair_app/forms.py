@@ -10,3 +10,8 @@ class MassageChairRecordForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['massage_chair_mode'].widget.choices = [(m.massage_chair_mode_id, m.massage_chair_mode_name) for m in MassageChairModes.objects.all()]
+
+class ExperienceQuestionnaireForm(forms.ModelForm):
+    class Meta:
+        model = ExperienceQuestionnaires
+        fields = ['willingness_to_use_again', 'massage_chair_mode_satisfaction']

@@ -1,0 +1,50 @@
+<!-- list_massage_record.html -->
+{% extends 'SitChair/base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h1>按摩椅使用紀錄</h1>
+    {% if messages %}
+    <div class="container mt-3">
+    {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+    </div>
+    {% endif %}
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>按摩椅</th>
+            <th>紀錄時間</th>
+            <th>按摩模式</th>
+            <th>付款方式</th>
+            <th>填寫問券</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for record in massage_record %}
+            <tr>
+              <th scope="row">{{ record.usage_id }}</th>
+              <td>{{ record.massage_chair }}</td>
+              <td>{{ record.start_time }}</td>
+              <td>{{ record.massage_chair_mode.massage_chair_mode_name }}</td>
+              <td>{{ record.get_payment_display }}</td>
+              {% if record.experience_questionnaires_fill == False %}
+              <td><a href="{% url 'SitChair/experience_questionnaire' usage_id=record.usage_id %}" class="btn btn-primary">填寫問券</a></td>
+              {% else %}
+              <td>已填寫</td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

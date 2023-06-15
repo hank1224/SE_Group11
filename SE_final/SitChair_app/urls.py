@@ -10,5 +10,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='SitChair/index'), name='SitChair/logout'),
     path('register/', register, name='SitChair/register'),
     path('use_massage_chair/', views.use_massage_chair, name='SitChair/use_massage_chair'),
+    path('experience_questionnaire/<int:usage_id>/', views.experience_questionnaire, name='SitChair/experience_questionnaire'),
+    path('list_massage_chair_record/', views.list_massage_chair_record, name='SitChair/list_massage_chair_record'),
 
 ]

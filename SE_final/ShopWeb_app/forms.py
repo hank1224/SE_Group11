@@ -77,37 +77,7 @@ class SalesQuestionnaireForm(forms.ModelForm):
         model = SalesQuestionnaires
         fields = ['sales_process_score', 'warranty_process_score']
 
-class ExperienceQuestionnaireForm(forms.ModelForm):
-    class Meta:
-        model = ExperienceQuestionnaires
-        fields = ['usage_id', 'willingness_to_use_again', 'massage_chair_mode_satisfaction']
-
 class ExperienceReservationForm(forms.ModelForm):
     class Meta:
         model = ExperienceReservations
         fields = ['customer', 'reservation_time', 'store_id', 'Salespeople']
-
-class ProductForm(forms.ModelForm):
-    class Meta:
-        model = Products
-        fields = ['product_model', 'product_name', 'product_price', 'product_cost', 'product_warranty']
-
-class PhysicalStoreForm(forms.ModelForm):
-    class Meta:
-        model = PhysicalStores
-        fields = ['branch_name']
-
-class SalespersonForm(forms.ModelForm):
-    class Meta:
-        model = Salespeople
-        fields = ['salesperson_name', 'store_id']
-
-class MassageChairForm(forms.ModelForm):
-    class Meta:
-        model = MassageChairs
-        fields = ['store_id', 'product_model']
-
-class MassageChairModeForm(forms.ModelForm):
-    class Meta:
-        model = MassageChairModes
-        fields = ['massage_chair_mode_name']

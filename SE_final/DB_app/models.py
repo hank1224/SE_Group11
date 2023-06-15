@@ -26,6 +26,7 @@ class MassageChairRecord(models.Model):
         ('2', 'APP付款'),
     ]
     payment = models.CharField(max_length=1, choices=PAYMENT_TYPE_CHOICES)
+    experience_questionnaires_fill = models.BooleanField(default=False)
 
 class PhysicalStores(models.Model):
     store_id = models.AutoField(primary_key=True)

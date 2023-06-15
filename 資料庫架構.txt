@@ -18,6 +18,7 @@
 - 按摩椅模式編號 (FK to MassageChairModes table)
 - 開始使用時間
 - 付款方式 [1:現金 2:APP]
++ 是否填過EQ
 
 3. 實體店面表（PhysicalStores）
 - 店號 (PK)
