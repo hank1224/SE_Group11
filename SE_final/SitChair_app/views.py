@@ -39,12 +39,11 @@ def use_massage_chair(request):
         form = MassageChairRecordForm(data=request.POST)
         if form.is_valid():
             print(form.cleaned_data)
+            form.instance.customer = request.user.customers
             form.save()
-        print(form.errors)
         messages.success(request, f"{request.user}已開始按摩服務!")
-        return redirect('SitChair/index')
+        return redirect('SitChair/use_massage_chair')
     else:
-        initial = {'customer': request.user.customers.customer_name}
-        form = MassageChairRecordForm(initial=initial)
+        form = MassageChairRecordForm()
         return render(request, 'SitChair/use_massage_chair.html', {'form': form})
 

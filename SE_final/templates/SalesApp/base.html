@@ -9,12 +9,12 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> 
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <!-- Include jQuery -->
-    <script src="{% static 'jquery.min.js' %}"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
     <title>{% block title %} {% endblock %}</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">業務員App</a>
+        <a class="navbar-brand" href="{% url 'SalesApp/index' %}">業務員App</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
