@@ -30,8 +30,8 @@
               <td>{{ record.product.product_name }}</td>
               <td>{{ record.sales_time|date:"Y年n月j日 H:i" }}</td>
               <td>{{ record.sales_price }}</td>
-              <td>{{ record.sales_price|subtract:record.product.product_cost }}</td>
-              <td>{{ record.questionnaire }}</td>
+              <td>{{ record.product.product_cost }}</td>
+              <td><a href="{% url 'send_EQ_email' sales_record_id=record.sales_record_id %}" class="btn btn-primary">寄送</a></td>
             {% endfor %}
           </tbody>
         </table>

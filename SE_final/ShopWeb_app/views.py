@@ -151,11 +151,9 @@ def sales_process_EQ(request, sales_record_id):
 
 #沒優化 
 def warranty_process_EQ(request, sales_record_id):
-    try:
-        SalesQuestionnaires.objects.get(sales_record=sales_record_id)
-    except:
-        sales_record_obj = SalesRecords.objects.get(sales_record_id=sales_record_id)
-        SalesQuestionnaires.objects.create(sales_record=SalesRecords.objects.get(sales_record=sales_record_obj))
+    if not SalesQuestionnaires.objects.filter(sales_record=sales_record_id).exists():
+        SalesQuestionnaires.objects.create(sales_record=SalesRecords.objects.get(sales_record_id=sales_record_id))
+
     if SalesQuestionnaires.objects.get(sales_record=sales_record_id).warranty_process_score:
         return HttpResponse("<h1>您已填過此表單</h1>")
     else:
