@@ -149,10 +149,10 @@ def customer_detail(request, customer_id):
         for customer_web_view in customer_web_views:
             if product.product_id == customer_web_view.product.product_id:
                 product_dict['view_counts'] += 1
-                for sales_record in sales_records:
-                    if product.product_id == sales_record.product.product_id:
-                        product_dict['bought'] = True
-                        break
+        for sales_record in sales_records:
+            if product.product_id == sales_record.product.product_id:
+                product_dict['bought'] = True
+                break
         products_data.append(product_dict)
     top_products = sorted(products_data, key=lambda k: k['view_counts'], reverse=True)
 
