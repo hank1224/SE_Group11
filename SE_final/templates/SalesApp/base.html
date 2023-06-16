@@ -24,8 +24,14 @@
                 <li class="nav-item {% block active %} {% endblock %}">
                     <a class="nav-link" href="{% url 'SalesApp/index' %}">Home</a>
                 </li>
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'SalesApp/sales_sell' %}">實體售出</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'SalesApp/actions' %}">行動</a>
+                </li>
+                {% endif %}
             </ul>
             <ul class="navbar-nav ml-auto">
                 {% if user.is_authenticated %}
@@ -44,11 +50,18 @@
         </div>
     </nav>
     <div class="container my-4">
+        {% if messages %}
+        <div class="container mt-3">
         {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-                {{ message }}
-            </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
         {% endfor %}
+        </div>
+        {% endif %}
         {% block content %}
         {% endblock %}
     </div>

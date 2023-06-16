@@ -19,7 +19,7 @@ def staff_login_required(view_func):
         if not request.user.is_authenticated:
             return redirect('/ShopWeb/login')
         elif request.user.is_active and request.user.is_staff:
-            return redirect('/SalesApp/index')
+            return view_func(request, *args, **kwargs)
         else:
             return view_func(request, *args, **kwargs)
     return wrapper
@@ -61,6 +61,7 @@ def register(request):
         form = SalespeopleRegisterForm()
         return render(request, 'SalesApp/register.html', {'form': form})
 
+@staff_login_required
 def sales_sell(request):
     if request.method == 'POST':
         form = SalesRecordsForm(request.POST)
@@ -77,9 +78,13 @@ def sales_sell(request):
         form = SalesRecordsForm(initial=initial)
     return render(request, 'SalesApp/sales_sell.html', {'form': form})
 
+@staff_login_required
+def actions(request):
+    Customers_list = Customers.objects.filter(salesperson=request.user.salespeople)
+    return render(request, 'SalesApp/actions.html', {'Customers_list': Customers_list})
 
 # 寄廣告信
-def send_ad_email(customer_id):
+def send_ad_email(request, customer_id):
     customer = Customers.objects.get(customer_id=customer_id)
     if not customer.username.email:
         return HttpResponse('此客戶無email資料')
@@ -88,20 +93,21 @@ def send_ad_email(customer_id):
         email_template = 'Email/ad.html'
         from_email = settings.EMAIL_HOST_USER
         to_email = [customer.username.email]
-
+        print("sending email to " + customer.username.email)
         html_content = render_to_string(email_template, {'customer': customer.customer_name, 'customer_id': customer_id})
         text_content = strip_tags(html_content)
 
         email = EmailMultiAlternatives(email_subject, text_content, from_email, to_email)
         email.attach_alternative(html_content, "text/html")
         email.send()
-        return True
+        messages.success(request, f"寄送廣告給 {customer.username} 成功!")
+        return redirect('/SalesApp/actions')
     except:
         print("send_ad_email error.")
-        return False
+        return redirect('/SalesApp/actions')
 
 # 寄EQ信
-def send_EQ_email(sales_record_id):
+def send_EQ_email(request, sales_record_id):
     customer_id = SalesRecords.objects.get(sales_record_id=sales_record_id).customer.customer_id
     customer = Customers.objects.get(customer_id=customer_id)
     if not customer.username.email:
@@ -111,14 +117,16 @@ def send_EQ_email(sales_record_id):
         email_template = 'Email/WarrantyProcessEQ.html'
         from_email = settings.EMAIL_HOST_USER
         to_email = [customer.username.email]
-
+        print("sending email to " + customer.username.email)
         html_content = render_to_string(email_template, {'customer': customer.customer_name, 'sales_record_id': sales_record_id, 'customer_id': customer_id})
         text_content = strip_tags(html_content)
 
         email = EmailMultiAlternatives(email_subject, text_content, from_email, to_email)
         email.attach_alternative(html_content, "text/html")
         email.send()
-        return True
+        messages.success(request, f"寄送問券給 {customer.username} 成功!")
+        return redirect('/SalesApp/actions')
     except:
         print("send_ad_email error.")
-        return False
+        return redirect('/SalesApp/actions')
+    

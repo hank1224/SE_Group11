@@ -1,0 +1,50 @@
+{% extends 'SalesApp/base.html' %}
+
+{% block content %}
+
+<div class="container my-5">
+  <h2 class="text-center mb-5">所屬顧客</h2>
+  
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+
+      {% if Customers_list %}
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">編號</th>
+              <th scope="col">使用者名稱</th>
+              <th scope="col">電話</th>
+              <th scope="col">Email</th>
+              <th scope="col">寄送廣告</th>
+              <th scope="col">詳細資料</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for customer in Customers_list %}
+            <tr>
+              <th scope="row">{{ customer.customer_id }}</th>
+              <td>{{ customer.username }}</td>
+              <td>{{ customer.phone_number }}</td>
+              <td>{{ customer.username.email }}</td>
+              <td><a href="{% url 'send_ad_email' customer.customer_id %}" class="btn btn-primary">寄廣告</a></td>
+              <td><a href="{% url 'SalesApp/index' %}" class="btn btn-primary">檢視</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p class="text-center">目前沒有訂單資訊。</p>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

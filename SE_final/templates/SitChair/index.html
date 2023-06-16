@@ -9,7 +9,7 @@
         <p class="lead">請選擇您要使用的按摩椅或填寫問券。</p>
         <hr class="my-4">
         <p>我們提供便利使用的按摩椅，讓您輕鬆享受按摩療程。</p>
-        <a class="btn btn-primary btn-lg" href="#" role="button">掃碼使用按摩椅</a>
-        <a class="btn btn-secondary btn-lg" href="#" role="button">填寫體驗問券</a>
+        <a class="btn btn-primary btn-lg" href="{% url 'SitChair/use_massage_chair' %}" role="button">掃碼使用按摩椅</a>
+        <a class="btn btn-secondary btn-lg" href="{% url 'SitChair/list_massage_chair_record' %}" role="button">填寫體驗問券</a>
     </div>
 {% endblock %}
