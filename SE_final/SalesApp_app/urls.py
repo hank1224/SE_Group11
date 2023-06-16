@@ -14,4 +14,5 @@ urlpatterns = [
     path('send_EQ_email/<int:sales_record_id>/', views.send_EQ_email, name='send_EQ_email'),
     path('customer_detail/<int:customer_id>/', views.customer_detail, name='customer_detail'),
     path('sales_record', views.sales_record, name='SalesApp/sales_record'),
+    path('reservations/', views.reservations, name='SalesApp/reservations'),
 ]

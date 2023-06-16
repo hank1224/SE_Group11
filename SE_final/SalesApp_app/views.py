@@ -13,7 +13,8 @@ from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
 
 from django.db.models import Count
-
+from datetime import datetime
+from django.db.models import Max, Min, Sum, Avg
 
 
 # 登入狀態確認，並且區隔客戶與員工
@@ -28,7 +29,30 @@ def staff_login_required(view_func):
     return wrapper
 
 def index(request):
+    if request.user.is_authenticated:
+        if request.user.is_staff:
+            customers = Customers.objects.filter(salesperson=request.user.salespeople)
+            sales_records = SalesRecords.objects.filter(salesperson=request.user.salespeople)
+
+            highest_sales_price = sales_records.aggregate(Max('sales_price'))['sales_price__max']
+            lowest_sales_price = sales_records.aggregate(Min('sales_price'))['sales_price__min']
+            total_sales_price = sales_records.aggregate(Sum('sales_price'))['sales_price__sum']
+            average_sales_price = sales_records.aggregate(Avg('sales_price'))['sales_price__avg']
+            
+            score_sheet = {
+                'highest_sales_price': highest_sales_price,
+                'lowest_sales_price': lowest_sales_price,
+                'total_sales_price': total_sales_price,
+                'average_sales_price': average_sales_price,
+            }
+
+            return render(request, 'SalesApp/index.html', {'customers': customers, 'score_sheet': score_sheet})
+        else:
+            messages.success(request, f"非員工, {request.user.username}!")
+            return render(request, 'SalesApp/index.html')
+    messages.success(request, f"請先登入!")
     return render(request, 'SalesApp/index.html')
+    
 
 def login_view(request):
     if request.method == 'POST': 
@@ -183,6 +207,12 @@ def customer_detail(request, customer_id):
     }
     return render(request, 'SalesApp/customer_detail.html', {'customer': customer, 'top_products': top_products, 'counts': counts})
 
+@staff_login_required
 def sales_record(request):
     records = SalesRecords.objects.filter(salesperson=request.user.salespeople)
     return render(request, 'SalesApp/sales_record.html', {'records': records})
+
+@staff_login_required
+def reservations(request):
+    reservation_list = ExperienceReservations.objects.filter(salespeople=request.user.salespeople, reservation_time__gte=datetime.now())
+    return render(request, 'SalesApp/reservations.html', {'reservation_list': reservation_list})
