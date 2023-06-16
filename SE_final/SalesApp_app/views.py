@@ -182,3 +182,7 @@ def customer_detail(request, customer_id):
         'AD_clicks': AD_clicks,
     }
     return render(request, 'SalesApp/customer_detail.html', {'customer': customer, 'top_products': top_products, 'counts': counts})
+
+def sales_record(request):
+    records = SalesRecords.objects.filter(salesperson=request.user.salespeople)
+    return render(request, 'SalesApp/sales_record.html', {'records': records})

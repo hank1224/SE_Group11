@@ -1,0 +1,51 @@
+{% extends 'SalesApp/base.html' %}
+
+{% block content %}
+
+{% load custom_filters %}
+
+<div class="container my-5">
+  <h2 class="text-center mb-5">銷售紀錄</h2>
+  
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+
+      {% if records %}
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">訂單ID</th>
+              <th scope="col">商品名稱</th>
+              <th scope="col">銷售時間</th>
+              <th scope="col">銷售價格</th>
+              <th scope="col">最比底價</th>
+              <th scope="col">售後問券</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for record in records %}
+            <tr>
+              <th scope="row">{{ record.sales_record_id }}</th>
+              <td>{{ record.product.product_name }}</td>
+              <td>{{ record.sales_time|date:"Y年n月j日 H:i" }}</td>
+              <td>{{ record.sales_price }}</td>
+              <td>{{ record.sales_price|subtract:record.product.product_cost }}</td>
+              <td>{{ record.questionnaire }}</td>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p class="text-center">沒賣出東西，加油好嗎。</p>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
