@@ -87,6 +87,10 @@
 - 預約店號 (FK to PhysicalStores table)
 ! 業務員編號 (FK to Salespeople table) 改小寫
 
++18. 客戶廣告信件點擊紀錄表(CustomerAdClicks)
+- 顧客編號 (FK to Customers table)
+- 點擊時間
+
 限制:
 1. 一筆訂單僅能有一個產品
 2. 顧客的負責業務員無法更換
@@ -103,7 +107,6 @@
     假設我們的按摩椅都能聯網綁手機，這樣就能拿資料，匿名紀錄資安應該還好
 
 6014起增修內容:
-
 
 class ExperienceReservations(models.Model):
     reservation_id = models.AutoField(primary_key=True)
@@ -129,6 +132,12 @@ class MassageChairRecord(models.Model):
     customer = models.ForeignKey(Customers, on_delete=models.CASCADE)
     product_id = models.ForeignKey(Products, on_delete=models.CASCADE)
     view_time = models.DateTimeField(auto_now_add=True)
+
+0616:
++class CustomerADClicks(models.Model):
+    customer = models.ForeignKey('Customers', on_delete=models.CASCADE)
+    ad = models.ForeignKey('ADs', on_delete=models.CASCADE)
+    click_time = models.DateTimeField(auto_now_add=True)
 
 
 銷售總額與淨利:

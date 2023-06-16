@@ -98,3 +98,7 @@ class ExperienceReservations(models.Model):
     reservation_time = models.DateTimeField()
     store_id = models.ForeignKey('PhysicalStores', on_delete=models.CASCADE)
     salespeople = models.ForeignKey('Salespeople', on_delete=models.CASCADE, null=True)
+
+class CustomerADClicks(models.Model):
+    customer = models.ForeignKey('Customers', on_delete=models.CASCADE)
+    click_time = models.DateTimeField(auto_now_add=True)

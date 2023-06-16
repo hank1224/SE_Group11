@@ -171,3 +171,10 @@ def warranty_process_EQ(request, sales_record_id):
         else:
             form = WarrantyProcessEQForm(instance=sales_record)
             return render(request, 'ShopWeb/warranty_process_EQ.html', {'form': form, 'sales_record_id': sales_record.sales_record_id, 'customer_id': sales_record.customer.customer_id})
+
+def customer_ad_click(request, customer_id):
+    try:
+        CustomerADClicks.objects.create(customer_id=customer_id)
+    except:
+        print("customer_ad_click error, not created")
+    return redirect('ShopWeb/index')

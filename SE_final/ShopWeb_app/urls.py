@@ -16,4 +16,5 @@ urlpatterns = [
     path('referral_code', views.referral_code, name='ShopWeb/referral_code'),
     path('sales_process_EQ/<int:sales_record_id>/', views.sales_process_EQ, name='ShopWeb/sales_process_EQ'),
     path('warranty_process_EQ/<int:sales_record_id>', views.warranty_process_EQ, name='ShopWeb/warranty_process_EQ'),
+    path('customer_ad_click/<int:customer_id>', views.customer_ad_click, name='ShopWeb/customer_ad_click'),
 ]

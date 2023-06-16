@@ -50,6 +50,10 @@ class ExperienceReservationsAdmin(admin.ModelAdmin):
     list_display = ('reservation_id', 'customer', 'reservation_time', 'store_id', 'salespeople')
     search_fields = ('customer__username__username',)
 
+class CustomerADClicksAdmin(admin.ModelAdmin):
+    list_display = ('customer', 'click_time')
+    ordering = ('-click_time',)
+
 admin.site.register(Customers, CustomersAdmin)
 admin.site.register(MassageChairRecord, MassageChairRecordAdmin)
 admin.site.register(PhysicalStores, PhysicalStoresAdmin)
@@ -63,3 +67,4 @@ admin.site.register(SalesRecords, SalesRecordsAdmin)
 admin.site.register(SalesQuestionnaires, SalesQuestionnairesAdmin)
 admin.site.register(ExperienceQuestionnaires, ExperienceQuestionnairesAdmin)
 admin.site.register(ExperienceReservations, ExperienceReservationsAdmin)
+admin.site.register(CustomerADClicks, CustomerADClicksAdmin)

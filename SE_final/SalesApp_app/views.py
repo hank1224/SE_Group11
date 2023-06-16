@@ -27,7 +27,7 @@ def index(request):
     return render(request, 'SalesApp/index.html')
 
 def login_view(request):
-    send_EQ_email(14)
+    send_ad_email(4)
     if request.method == 'POST': 
         form = AuthenticationForm(data=request.POST) 
         if form.is_valid(): 
@@ -42,17 +42,17 @@ def login_view(request):
     return render(request, 'SalesApp/login.html', {'form': form}) 
 
 # 寄廣告信
-def send_ad_email(request, customer_id):
+def send_ad_email(customer_id):
     customer = Customers.objects.get(customer_id=customer_id)
     if not customer.username.email:
         return HttpResponse('此客戶無email資料')
     try:
-        email_subject = '按摩椅推銷'
+        email_subject = '按摩椅廣告信'
         email_template = 'Email/ad.html'
         from_email = settings.EMAIL_HOST_USER
         to_email = [customer.username.email]
 
-        html_content = render_to_string(email_template, {'customer': customer.customer_name})
+        html_content = render_to_string(email_template, {'customer': customer.customer_name, 'customer_id': customer_id})
         text_content = strip_tags(html_content)
 
         email = EmailMultiAlternatives(email_subject, text_content, from_email, to_email)
