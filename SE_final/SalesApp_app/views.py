@@ -12,6 +12,8 @@ from SE_final import settings
 from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
 
+from collections import defaultdict
+
 
 # 登入狀態確認，並且區隔客戶與員工
 def staff_login_required(view_func):
@@ -129,4 +131,26 @@ def send_EQ_email(request, sales_record_id):
     except:
         print("send_ad_email error.")
         return redirect('/SalesApp/actions')
-    
+
+def customer_detail(request, customer_id):
+    customer = Customers.objects.get(customer_id=customer_id)
+    sales_records = SalesRecords.objects.filter(customer=customer)
+    products = Products.objects.all()
+    customer_web_views = CustomerWebViews.objects.filter(customer=customer)
+
+    products_data = []
+    for product in products:
+        product_dict = {'product_name': product.product_name, 'product_model': product.product_model,
+                        'view_counts': 0, 'bought': False}
+        for customer_web_view in customer_web_views:
+            if product.product_id == customer_web_view.product.product_id:
+                product_dict['view_counts'] += 1
+                for sales_record in sales_records:
+                    if product.product_id == sales_record.product.product_id:
+                        product_dict['bought'] = True
+                        break
+        products_data.append(product_dict)
+
+    top_products = sorted(products_data, key=lambda k: k['view_counts'], reverse=True)
+
+    return render(request, 'SalesApp/customer_detail.html', {'customer': customer, 'top_products': top_products})

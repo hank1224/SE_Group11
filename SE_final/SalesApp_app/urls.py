@@ -12,4 +12,5 @@ urlpatterns = [
     path('actions/', views.actions, name='SalesApp/actions'),
     path('send_ad_email/<int:customer_id>/', views.send_ad_email, name='send_ad_email'),
     path('send_EQ_email/<int:sales_record_id>/', views.send_EQ_email, name='send_EQ_email'),
+    path('customer_detail/<int:customer_id>/', views.customer_detail, name='customer_detail'),
 ]

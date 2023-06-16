@@ -29,7 +29,7 @@
               <td>{{ customer.phone_number }}</td>
               <td>{{ customer.username.email }}</td>
               <td><a href="{% url 'send_ad_email' customer.customer_id %}" class="btn btn-primary">寄廣告</a></td>
-              <td><a href="{% url 'SalesApp/index' %}" class="btn btn-primary">檢視</a></td>
+              <td><a href="{% url 'customer_detail' customer.customer_id %}" class="btn btn-primary">檢視</a></td>
             </tr>
             {% endfor %}
           </tbody>
