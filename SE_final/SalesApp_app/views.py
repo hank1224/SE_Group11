@@ -37,6 +37,7 @@ def login_view(request):
             if request.user.is_staff:
                 return redirect('/SalesApp/index')
             return redirect('ShopWeb/index') 
+        print(form.errors)
     else:
         form = AuthenticationForm()
     return render(request, 'SalesApp/login.html', {'form': form}) 
@@ -54,6 +55,7 @@ def register(request):
             messages.success(request, f"New account created: {user.username}")
             login(request, user)
             return redirect('/SalesApp/index')
+        print(form.errors)
         return redirect('/SalesApp/register')
     else:
         form = SalespeopleRegisterForm()
@@ -61,15 +63,19 @@ def register(request):
 
 def sales_sell(request):
     if request.method == 'POST':
-        form = SalesRecordsForm(data=request.POST)
+        form = SalesRecordsForm(request.POST)
         if form.is_valid():
-            form.save()
+            customer = form.cleaned_data['customer']
+            product = form.cleaned_data['product']
+            sales_price = form.cleaned_data['sales_price']
+            SalesRecords.objects.create(customer=customer, product=product, sales_price=sales_price, sales_type='2', salesperson=request.user.salespeople, store=request.user.salespeople.store_id)
             messages.success(request, f"Success!")
-            return redirect('/SalesApp/sales_sell')
-        return redirect('/SalesApp/sales_sell')
+            return redirect('/SalesApp/index')
+        print(form.errors)
     else:
-        form = SalesRecordsForm()
-        return render(request, 'SalesApp/sales_sell.html', {'form': form})
+        initial = {'sales_type': '2', 'salesperson': request.user.salespeople}  # 將預設值設定為2（sales_type）以及當前登入的使用者（salesperson）
+        form = SalesRecordsForm(initial=initial)
+    return render(request, 'SalesApp/sales_sell.html', {'form': form})
 
 
 # 寄廣告信

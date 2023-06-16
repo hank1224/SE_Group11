@@ -12,13 +12,6 @@ class SalespeopleRegisterForm(UserCreationForm):
         fields = ['username', 'password1', 'password2', 'salesperson_name', 'store_id']
 
 class SalesRecordsForm(forms.ModelForm):
-    SALES_TYPE_CHOICES = [
-        ('1', '線上'),
-        ('2', '實體'),
-    ]
-    sales_type = forms.CharField(widget=forms.HiddenInput(), initial='2')
-    salesperson = forms.ModelChoiceField(widget=forms.HiddenInput(), queryset=Salespeople.objects.all(), required=False)
-
     class Meta:
         model = SalesRecords
         fields = ['customer', 'product', 'sales_price']
@@ -26,12 +19,3 @@ class SalesRecordsForm(forms.ModelForm):
             'customer': forms.Select(attrs={'class': 'form-control'}),
         }
     
-    def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
-        super().__init__(*args, **kwargs)
-        if user is not None and user.is_authenticated:
-            try:
-                salesperson = Salespeople.objects.get(user=user)
-                self.fields['salesperson'].initial = salesperson
-            except Salespeople.DoesNotExist:
-                pass
