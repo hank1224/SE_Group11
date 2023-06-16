@@ -8,32 +8,60 @@
   <div class="row justify-content-center">
     <div class="col-12 col-lg-8">
 
-        <div class="table-responsive">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">商品型號</th>
-              <th scope="col">商品名稱</th>
-              <th scope="col">商品瀏覽次數</th>
-              <th scope="col">是否已買過?</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for product in top_products %}
-            <tr>
-              <th scope="row">{{ product.product_model }}</th>
-              <td>{{ product.product_name }}</td>
-              <td>{{ product.view_counts }}</td>
-              <td>{{ product.bought|yesno }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+      <div class="card mb-5">
+        <div class="card-body">
+          <h4 class="card-title">顧客資料</h4>
+          <p class="card-text">姓名: {{ customer.customer_name }}</p>
+          <p class="card-text">性別: {{ customer.customer_gender }}</p>
+          <p class="card-text">電話: {{ customer.phone_number }}</p>
+          <p class="card-text">信箱: {{ customer.username.email }}</p>
+            <p class="card-text">推薦碼使用?: {{ customer.referralcodes.used_referral_code|yesno }}</p>
+          <p class="card-text">成為會員時間: {{ customer.username.date_joined }}</p>
+        </div>
       </div>
-      顧客資料
-      {{ customer.customer_name }}
-      {{ customer.customer_phone }}
-      {{ customer.customer_customer_gender }}
+
+      <div class="card mb-5">
+        <div class="card-body">
+          <h4 class="card-title">業務資料</h4>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">已購買商品數量: {{ counts.bought_product_counts }}</li>
+            <li class="list-group-item">已購買商品總金額: {{ counts.bought_sum }}</li>
+            <li class="list-group-item">已乘坐公共按摩椅次數: {{ counts.massage_chair_counts }}</li>
+            <li class="list-group-item">已完成 按摩椅體驗問券 數量: {{ counts.massage_chair_EQ_counts }}</li>
+            <li class="list-group-item">已完成 銷售過程問券 數量: {{ counts.finished_process_EQ }}</li>
+            <li class="list-group-item">已完成 售後服務問券 數量:  {{ counts.finished_warranty_EQ }}</li>
+            <li class="list-group-item">從廣告信進入網站次數: {{ counts.AD_clicks }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">熱門瀏覽追蹤</h4>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">商品型號</th>
+                  <th scope="col">商品名稱</th>
+                  <th scope="col">商品瀏覽次數</th>
+                  <th scope="col">是否已買過?</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for product in top_products %}
+                  <tr>
+                    <th scope="row">{{ product.product_model }}</th>
+                    <td>{{ product.product_name }}</td>
+                    <td>{{ product.view_counts }}</td>
+                    <td>{{ product.bought|yesno }}</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>

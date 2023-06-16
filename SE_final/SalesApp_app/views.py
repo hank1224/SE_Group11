@@ -12,7 +12,8 @@ from SE_final import settings
 from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
 
-from collections import defaultdict
+from django.db.models import Count
+
 
 
 # 登入狀態確認，並且區隔客戶與員工
@@ -137,6 +138,9 @@ def customer_detail(request, customer_id):
     sales_records = SalesRecords.objects.filter(customer=customer)
     products = Products.objects.all()
     customer_web_views = CustomerWebViews.objects.filter(customer=customer)
+    massage_chair_records = MassageChairRecord.objects.filter(customer=customer)
+    experience_questionnaires = ExperienceQuestionnaires.objects.filter(customer=customer)
+    customer_AD_clicks = CustomerADClicks.objects.filter(customer=customer)
 
     products_data = []
     for product in products:
@@ -150,7 +154,31 @@ def customer_detail(request, customer_id):
                         product_dict['bought'] = True
                         break
         products_data.append(product_dict)
-
     top_products = sorted(products_data, key=lambda k: k['view_counts'], reverse=True)
 
-    return render(request, 'SalesApp/customer_detail.html', {'customer': customer, 'top_products': top_products})
+    bought_product_counts = sales_records.count()
+
+    bought_sum = 0
+    for sales_record in sales_records:
+        bought_sum += sales_record.sales_price
+
+    massage_chair_counts = massage_chair_records.count()
+
+    massage_chair_EQ_counts = experience_questionnaires.count()
+
+    finished_process_EQ = SalesRecords.objects.filter(salesquestionnaires__sales_process_score__isnull=False).annotate(sq_count=Count('salesquestionnaires')).filter(sq_count__gt=0).count()
+    
+    finished_warranty_EQ = SalesRecords.objects.filter(salesquestionnaires__warranty_process_score__isnull=False).annotate(sq_count=Count('salesquestionnaires')).filter(sq_count__gt=0).count()
+    
+    AD_clicks = customer_AD_clicks.count()
+    
+    counts={
+        'bought_product_counts': bought_product_counts,
+        'bought_sum': bought_sum,
+        'massage_chair_counts': massage_chair_counts,
+        'massage_chair_EQ_counts': massage_chair_EQ_counts,
+        'finished_process_EQ': finished_process_EQ,
+        'finished_warranty_EQ': finished_warranty_EQ,
+        'AD_clicks': AD_clicks,
+    }
+    return render(request, 'SalesApp/customer_detail.html', {'customer': customer, 'top_products': top_products, 'counts': counts})
