@@ -22,8 +22,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item {% block active %} {% endblock %}">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="{% url 'SalesApp/index' %}">Home</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'SalesApp/sales_sell' %}">實體售出</a>
             </ul>
             <ul class="navbar-nav ml-auto">
                 {% if user.is_authenticated %}

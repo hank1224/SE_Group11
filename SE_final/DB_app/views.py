@@ -27,9 +27,26 @@ def create_test_data(request):
     store2 = PhysicalStores.objects.create(branch_name="B店")
 
     # Salespeople 在每個店鋪中新增銷售員：
-    staff1 = Salespeople.objects.create(salesperson_name="小明", store_id=store1)
-    staff2 = Salespeople.objects.create(salesperson_name="小王", store_id=store2)
-    staff3 = Salespeople.objects.create(salesperson_name="小林", store_id=store2)
+    staff1 = User.objects.create_user(
+        username="staff1",
+        password="testpassword",
+        is_staff=True
+    )
+    salespeople1 = Salespeople.objects.create(salesperson_name="小李", store_id=store1, staff_username=staff1)
+
+    staff2 = User.objects.create_user(
+        username="staff2",
+        password="testpassword",
+        is_staff=True
+    )
+    salespeople2 = Salespeople.objects.create(salesperson_name="小王", store_id=store2, staff_username=staff2)
+
+    staff3 = User.objects.create_user(
+        username="staff3",
+        password="testpassword",
+        is_staff=True
+    )
+    salespeople3 = Salespeople.objects.create(salesperson_name="小林", store_id=store2, staff_username=staff3)
     
 
     # Products 建立產品：
@@ -49,7 +66,7 @@ def create_test_data(request):
         customer_name="王大明",
         customer_gender="1",
         phone_number="0912345678",
-        salesperson=staff1
+        salesperson=salespeople3
     )
 
     #user2
@@ -62,7 +79,7 @@ def create_test_data(request):
         customer_name="陳小美",
         customer_gender="2",
         phone_number="0987654321",
-        salesperson=staff3
+        salesperson=salespeople2
     )
     
 
@@ -87,8 +104,8 @@ def create_test_data(request):
     
 
     # SalesRecords 建立銷售紀錄：
-    sales1 = SalesRecords.objects.create(customer=cust1, product=prod1, sales_type="2", salesperson=staff1, store=store1, sales_price=10000)
-    sales2 = SalesRecords.objects.create(customer=cust2, product=prod2, sales_type="2", salesperson=staff3, store=store2, sales_price=15000)
+    sales1 = SalesRecords.objects.create(customer=cust1, product=prod1, sales_type="2", salesperson=salespeople3, store=store1, sales_price=10000)
+    sales2 = SalesRecords.objects.create(customer=cust2, product=prod2, sales_type="2", salesperson=salespeople3, store=store2, sales_price=15000)
     
 
     # ReferralCodes 建立推薦序號：
@@ -105,7 +122,7 @@ def create_test_data(request):
     sales_ques2 = SalesQuestionnaires.objects.create(sales_record=sales2, sales_process_score=6, warranty_process_score=7)
 
     # ExperienceReservations 建立體驗預約：
-    reverse1 = ExperienceReservations.objects.create(customer=cust1, store_id=store1, reservation_time=datetime.datetime.now(), salespeople=staff1)
-    reverse2 = ExperienceReservations.objects.create(customer=cust2, store_id=store2, reservation_time=datetime.datetime.now(), salespeople=staff3)
+    reverse1 = ExperienceReservations.objects.create(customer=cust1, store_id=store1, reservation_time=datetime.datetime.now(), salespeople=salespeople3)
+    reverse2 = ExperienceReservations.objects.create(customer=cust2, store_id=store2, reservation_time=datetime.datetime.now(), salespeople=salespeople3)
     
     return HttpResponse("測試資料建立完成！")

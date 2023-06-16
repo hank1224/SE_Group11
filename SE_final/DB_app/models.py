@@ -34,6 +34,7 @@ class PhysicalStores(models.Model):
 
 class Salespeople(models.Model):
     salesperson_id = models.AutoField(primary_key=True)
+    staff_username = models.OneToOneField(User, on_delete=models.CASCADE)
     salesperson_name = models.CharField(max_length=255)
     store_id = models.ForeignKey('PhysicalStores', on_delete=models.CASCADE)
 

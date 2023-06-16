@@ -7,5 +7,5 @@
     {{ form.as_p }} 
     <button type="submit" class="btn btn-primary">Login</button> 
   </form> 
-  <p>Don't have an account? Pathetic</p>
+  <p>Don't have an account? <a href="{% url 'SalesApp/register' %}">員工註冊</a></p>
 {% endblock %}
