@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.utils import timezone
 
+from django.contrib.auth.models import User
 from .models import *
 import datetime
 import random
@@ -22,7 +23,7 @@ def create_test_data(request):
 
     # 檢查是否已建立過測試資料
     if len(PhysicalStores.objects.all()) > 0:
-        return HttpResponse("<h1>已建立過測試資料</h1>")
+        return HttpResponse("已建立過測試資料，若前面創建出錯請刪資料庫重來！")
 
     # 首先，我們需要確定所有的外建約束在測試資料中也一定要存在。
     # PhysicalStores 先建立一些店鋪：
@@ -32,42 +33,19 @@ def create_test_data(request):
     store4 = PhysicalStores.objects.create(branch_name="實體店D")
     store5 = PhysicalStores.objects.create(branch_name="實體店E")
 
-    # Salespeople 在每個店鋪中新增銷售員：
-    staff1 = User.objects.create_user(
-        username="staff1",
-        password="testpassword",
-        is_staff=True
-    )
-    salespeople1 = Salespeople.objects.create(salesperson_name="銷售員1", store_id=store1, staff_username=staff1)
+    # Salespeople 建立銷售員：
+    for i in range(1, 6):
+        username = "staff" + str(i)
+        password = "0000"
+        is_staff = True
 
-    staff2 = User.objects.create_user(
-        username="staff2",
-        password="testpassword",
-        is_staff=True
-    )
-    salespeople2 = Salespeople.objects.create(salesperson_name="銷售員2", store_id=store5, staff_username=staff2)
+        user = User.objects.create_user(username=username, password=password, is_staff=is_staff)
 
-    staff3 = User.objects.create_user(
-        username="staff3",
-        password="testpassword",
-        is_staff=True
-    )
-    salespeople3 = Salespeople.objects.create(salesperson_name="銷售員3", store_id=store2, staff_username=staff3)
+        salesperson_name = "銷售員" + str(i)
+        store = PhysicalStores.objects.get(store_id=i)
+        staff_username = User.objects.get(username=username)
 
-    staff4 = User.objects.create_user(
-        username="staff4",
-        password="testpassword",
-        is_staff=True
-    )
-    salespeople4 = Salespeople.objects.create(salesperson_name="銷售員4", store_id=store3, staff_username=staff4)
-
-    staff5 = User.objects.create_user(
-        username="staff5",
-        password="testpassword",
-        is_staff=True
-    )
-    salespeople5 = Salespeople.objects.create(salesperson_name="銷售員5", store_id=store4, staff_username=staff5)
-    
+        salesperson = Salespeople.objects.create(salesperson_name=salesperson_name, store_id=store, staff_username=staff_username)
 
     # Products 建立產品：
     prod1 = Products.objects.create(product_model="HY-3068A", product_name="WULA超有力小沙發按摩椅", product_price=25000, product_cost=20000, product_warranty=False)
@@ -77,113 +55,31 @@ def create_test_data(request):
     prod5 = Products.objects.create(product_model="HY-CR52-GY", product_name="樂享起身沙發椅 (多功能電動沙發/起身椅)", product_price=15000, product_cost=10000, product_warranty=False)    
 
     # Customers：
+    salespeople = Salespeople.objects.all()
 
-    #user1
-    user1 = User.objects.create_user(
-        username="user1",
-        password="testpassword"
-    )
-    cust1 = Customers.objects.create(
-        username=user1,
-        customer_name="顧客1",
-        customer_gender="1",
-        phone_number="0912345678",
-        salesperson=salespeople1
-    )
+    for i in range(1,9):
+        # create user
+        username = "user" + str(i)
+        password = "0000"
+        email = str(random.randint(1000,9999)) + "@gmail.com"
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            email=email
+        )
 
-    #user2
-    user2 = User.objects.create_user(
-        username="user2",
-        password="testpassword"
-    )
-    cust2 = Customers.objects.create(
-        username=user2,
-        customer_name="顧客2",
-        customer_gender="2",
-        phone_number="0987654321",
-        salesperson=salespeople2
-    )
-
-    #user3
-    user3 = User.objects.create_user(
-        username="user3",
-        password="testpassword"
-    )
-    cust3 = Customers.objects.create(
-        username=user3,
-        customer_name="顧客3",
-        customer_gender="1",
-        phone_number="0912345678",
-        salesperson=salespeople1
-    )
-
-    #user4
-    user4 = User.objects.create_user(
-        username="user4",
-        password="testpassword"
-    )
-    cust4 = Customers.objects.create(
-        username=user4,
-        customer_name="顧客4",
-        customer_gender="3",
-        phone_number="0987654321",
-        salesperson=salespeople4
-    )
-
-    #user5
-    user5 = User.objects.create_user(
-        username="user5",
-        password="testpassword"
-    )
-    cust5 = Customers.objects.create(
-        username=user5,
-        customer_name="顧客5",
-        customer_gender="4",
-        phone_number="0912345678",
-        salesperson=salespeople1
-    )
-    
-    # user6
-    user6 = User.objects.create_user(
-        username="user6",
-        password="testpassword"
-    )
-    cust6 = Customers.objects.create(
-        username=user6,
-        customer_name="顧客6",
-        customer_gender="4",
-        phone_number="0987654321",
-        salesperson=salespeople5
-    )
-
-    # user7
-    user7 = User.objects.create_user(
-        username="user7",
-        password="testpassword"
-    )
-    cust7 = Customers.objects.create(
-        username=user7,
-        customer_name="顧客7",
-        customer_gender="4",
-        phone_number="0912345678",
-        salesperson=salespeople1
-    )
-
-    # user8
-    user8 = User.objects.create_user(
-        username="user8",
-        password="testpassword"
-    )
-    cust8 = Customers.objects.create(
-        username=user8,
-        customer_name="顧客8",
-        customer_gender="3",
-        phone_number="0987654321",
-        salesperson=salespeople4
-    )
-
-
-
+        # create customer
+        customer_name = "顧客" + str(i)
+        customer_gender = str(i % 4 + 1)  # 1~4循環
+        phone_number = "0912345678"
+        salesperson =  salespeople[i % len(salespeople)]
+        customer = Customers.objects.create(
+            username=user,
+            customer_name=customer_name,
+            customer_gender=customer_gender,
+            phone_number=phone_number,
+            salesperson=salesperson
+        )
     
     # MassageChairModes 建立按摩椅模式：  
     mode1 = MassageChairModes.objects.create(massage_chair_mode_name="模式A")
@@ -201,13 +97,13 @@ def create_test_data(request):
     
 
     # MassageChairRecord 建立按摩椅紀錄：
-    customers = [cust1, cust2, cust3, cust4, cust5, cust6, cust7, cust8]
+    customers = Customers.objects.all()
     massage_chairs = [chair1, chair2, chair3, chair4, chair5]
     modes = [mode1, mode2, mode3, mode4, mode5]
     payments = ['1', '2']
 
     # 建立25筆按摩椅紀錄
-    for i in range(25):
+    for i in range(50):
         customer = random.choice(customers)
         massage_chair = random.choice(massage_chairs)
         massage_chair_mode = random.choice(modes)
@@ -219,15 +115,15 @@ def create_test_data(request):
     
 
     # CustomerWebViews 建立線上商店參觀紀錄：
-    for i in range(25):
-        cust = random.choice([cust1, cust2, cust3, cust4, cust5, cust6, cust7, cust8])
+    for i in range(50):
+        cust = random.choice(customers)
         prod = random.choice([prod1, prod2, prod3, prod4, prod5])
         visit = CustomerWebViews.objects.create(customer=cust, product=prod)
     
 
     # SalesRecords 建立銷售紀錄：
-    for i in range(50):
-        cust = random.choice([cust1, cust2, cust3, cust4, cust5, cust6, cust7, cust8])
+    for i in range(100):
+        cust = random.choice(customers)
         prod = random.choice([prod1, prod2, prod3, prod4, prod5])
         sales_type = random.choice(["1", "2"])
         if sales_type == "1":
@@ -235,21 +131,22 @@ def create_test_data(request):
             sales_price = Products.objects.get(product_id=prod.product_id).product_price
         else:
             store = random.choice([store1, store2, store3])
-        salesperson = random.choice([salespeople1, salespeople2, salespeople3, salespeople4, salespeople5])
+        salesperson = random.choice(salespeople)
         orgin_price = Products.objects.get(product_id=prod.product_id).product_price
         addion = random.randint(1, 30)*100
         sales_price = orgin_price + addion
         SalesRecords.objects.create(customer=cust, product=prod, sales_type=sales_type, salesperson=salesperson, store=store, sales_price=sales_price)
 
     # ReferralCodes 建立推薦序號：
-    referral1 = ReferralCodes.objects.create(customer=cust1, referral_code="341234", used_referral_code="")
-    referral2 = ReferralCodes.objects.create(customer=cust2, referral_code="823581", used_referral_code="341234")
-    referral3 = ReferralCodes.objects.create(customer=cust3, referral_code="745634", used_referral_code="")
-    referral4 = ReferralCodes.objects.create(customer=cust4, referral_code="123876", used_referral_code="")
-    referral5 = ReferralCodes.objects.create(customer=cust5, referral_code="465312", used_referral_code="341234")
-    referral6 = ReferralCodes.objects.create(customer=cust6, referral_code="786234", used_referral_code="")
-    referral7 = ReferralCodes.objects.create(customer=cust7, referral_code="321567", used_referral_code="")
-    referral8 = ReferralCodes.objects.create(customer=cust8, referral_code="489561", used_referral_code="745634")
+    for customer in customers:
+        ReferralCodes.objects.create(customer=customer, referral_code=str(random.randint(100000,999999)), used_referral_code="")
+    chose_referral_codes = random.choice(ReferralCodes.objects.all()).referral_code
+    for i in range(3):
+        referral_code = random.choice(ReferralCodes.objects.all())
+        referral_code.used_referral_code = chose_referral_codes
+        referral_code.save()
+
+
     
     # ExperienceQuestionnaires 建立體驗問卷：
     massage_chair_records = MassageChairRecord.objects.all()
@@ -268,15 +165,16 @@ def create_test_data(request):
     customers = Customers.objects.all()
     stores = PhysicalStores.objects.all()
     now = datetime.datetime.now()
-    for customer in customers:
-        hour = random.randint(0, 99)
-        minute = random.randrange(0, 4) * 15
-        seconds = 0
-        time_delta = datetime.timedelta(hours=hour, minutes=minute, seconds=seconds)
-        random_time = (now + time_delta).replace(tzinfo=timezone.utc)
+    for i in range(2):
+        for customer in customers:
+            hour = random.randint(0, 99)
+            minute = random.randrange(0, 4) * 15
+            seconds = 0
+            time_delta = datetime.timedelta(hours=hour, minutes=minute, seconds=seconds)
+            random_time = (now + time_delta).replace(tzinfo=timezone.utc)
 
-        store = random.choice(stores)
-        salespeople = random.choice(Salespeople.objects.filter(store_id=store))
-        ExperienceReservations.objects.create(customer=customer, store_id=store, reservation_time=random_time, salespeople=salespeople)
-
-    return HttpResponse("測試資料建立完成！")
+            store = random.choice(stores)
+            salespeople = random.choice(Salespeople.objects.filter(store_id=store))
+            ExperienceReservations.objects.create(customer=customer, store_id=store, reservation_time=random_time, salespeople=salespeople)
+    
+    return HttpResponse("<h1>測試資料建立完成！</h1>")
