@@ -1,6 +1,6 @@
 # SE_Group11
 
-基於按摩椅銷售業務的 ERP & CRM 系統，使用Django框架開發。
+基於按摩椅銷售業務的 ERP & CRM 系統，使用 Django 框架開發。
 
 基於OMO模式的銷售管理系統，軟體專案管理課程期末。  
 
@@ -35,8 +35,17 @@
 
 ## 實機展示圖集
 
-![](https://picsum.photos/id/684/600/400)
+### 可追蹤顧客網站行為與紀錄，協助銷售員判斷顧客狀態
 
+<img src=".github/img/業務員見顧客分析.png" width=600>
+
+<img src=".github/img/業務員見顧客追蹤資料.png" width=600>
+
+### 銷售報表 與 對顧客採取行動
+
+<img src=".github/img/業務員銷售報表.png" width=800>
+
+<img src=".github/img/廣告推播服務.png" width=800>
 
 ## Deployment
 
@@ -76,6 +85,8 @@
     系統導覽頁入口：[http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
 4. **創建初始資料**
+
+   <img src=".github/img/入口導覽頁.png" height="250">
 
     在系統導覽頁中，點選`建立測試數據`以創建初始資料。此操作將會創建：
 
